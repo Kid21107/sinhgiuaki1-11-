@@ -1,0 +1,2900 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sinh Học 11 - Ôn Tập Giữa Kì | EdTech Quiz Hub</title>
+  <meta name="description" content="Ứng dụng ôn tập trắc nghiệm Sinh học 11 Giữa kì I: Khái quát TĐC & NL, Trao đổi nước & khoáng, Quang hợp ở thực vật.">
+  
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50: '#ecfdf5',
+              100: '#d1fae5',
+              200: '#a7f3d0',
+              500: '#10b981',
+              600: '#059669',
+              700: '#047857',
+              800: '#065f46',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    /* Tùy chỉnh thanh cuộn thanh lịch */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 9999px;
+    }
+    .dark ::-webkit-scrollbar-thumb {
+      background: #334155;
+    }
+    /* Chuyển động mượt */
+    .transition-theme {
+      transition: background-color 0.25s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.25s cubic-bezier(0.4, 0, 0.2, 1), color 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-950 dark:text-slate-100 font-sans antialiased min-h-screen transition-theme selection:bg-brand-500 selection:text-white">
+
+  <!-- ================= TOPBAR CỐ ĐỊNH ================= -->
+  <header class="sticky top-0 z-40 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800 transition-theme shadow-xs">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+      
+      <!-- Logo & Tiêu đề -->
+      <div class="flex items-center gap-3">
+        <button id="mobileMenuBtn" class="lg:hidden p-2 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all">
+          <i data-lucide="menu" class="w-5 h-5"></i>
+        </button>
+        <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-brand-600 to-emerald-400 flex items-center justify-center text-white shadow-md shadow-brand-500/20 flex-shrink-0">
+          <i data-lucide="dna" class="w-5 h-5"></i>
+        </div>
+        <div>
+          <h1 class="text-base sm:text-lg font-bold tracking-tight text-slate-900 dark:text-white flex items-center gap-2">
+            Sinh Học 11 <span class="hidden sm:inline-block text-xs font-semibold px-2 py-0.5 rounded-full bg-brand-100 dark:bg-brand-900/60 text-brand-700 dark:text-brand-300">Ôn Thi Giữa Kì I</span>
+          </h1>
+          <p class="text-xs text-slate-500 dark:text-slate-400 hidden sm:block">Chương trình chuẩn GDPT 2018</p>
+        </div>
+      </div>
+
+      <!-- Chế độ & Đồng hồ & Thao tác -->
+      <div class="flex items-center gap-2 sm:gap-4">
+        <!-- Chế độ làm bài (Study / Exam) -->
+        <div class="inline-flex p-1 bg-slate-100 dark:bg-slate-800 rounded-xl text-xs font-semibold">
+          <button id="modeStudyBtn" class="px-2.5 sm:px-3 py-1.5 rounded-lg bg-white dark:bg-slate-700 text-brand-600 dark:text-brand-400 shadow-xs transition-all flex items-center gap-1.5">
+            <i data-lucide="book-open" class="w-3.5 h-3.5"></i>
+            <span class="hidden sm:inline">Luyện Tập</span>
+          </button>
+          <button id="modeExamBtn" class="px-2.5 sm:px-3 py-1.5 rounded-lg text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all flex items-center gap-1.5">
+            <i data-lucide="timer" class="w-3.5 h-3.5"></i>
+            <span class="hidden sm:inline">Thi Thử</span>
+          </button>
+        </div>
+
+        <!-- Đồng hồ đếm giờ -->
+        <div id="timerContainer" class="hidden items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-400 border border-amber-200/60 dark:border-amber-900 text-xs font-mono font-bold">
+          <i data-lucide="clock" class="w-3.5 h-3.5 animate-pulse"></i>
+          <span id="timerDisplay">45:00</span>
+        </div>
+
+        <!-- Nút âm thanh -->
+        <button id="soundToggleBtn" title="Bật/Tắt âm thanh thông báo" class="p-2 rounded-xl text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all">
+          <i id="soundIcon" data-lucide="volume-2" class="w-4 h-4"></i>
+        </button>
+
+        <!-- Nút Dark Mode -->
+        <button id="themeToggleBtn" title="Chuyển chế độ sáng/tối" class="p-2 rounded-xl text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all">
+          <i id="themeIcon" data-lucide="moon" class="w-4 h-4"></i>
+        </button>
+
+        <!-- Nút nộp bài (Exam Mode) -->
+        <button id="submitExamBtn" class="hidden px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-brand-600 to-emerald-600 hover:from-brand-700 hover:to-emerald-700 text-white text-xs font-bold shadow-sm transition-all active:scale-95 items-center gap-1.5">
+          <i data-lucide="send" class="w-3.5 h-3.5"></i>
+          <span>Nộp Bài</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Thanh tiến trình (Progress Bar) -->
+    <div class="w-full bg-slate-100 dark:bg-slate-800 h-1 relative overflow-hidden">
+      <div id="progressBar" class="bg-gradient-to-r from-brand-500 to-emerald-400 h-full w-0 transition-all duration-300 ease-out"></div>
+    </div>
+  </header>
+
+  <!-- ================= NỘI DUNG CHÍNH (2 CỘT) ================= -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+
+      <!-- CỘT TRÁI: BẢNG ĐIỀU HƯỚNG CÂU HỎI (Sidebar / Navigator) -->
+      <aside id="sidebarNav" class="fixed inset-y-0 left-0 z-50 w-80 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 p-5 transform -translate-x-full transition-transform duration-300 lg:relative lg:translate-x-0 lg:w-auto lg:col-span-4 lg:border lg:rounded-2xl lg:shadow-xs lg:block">
+        
+        <!-- Header Sidebar (Mobile only) -->
+        <div class="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-slate-800 lg:hidden">
+          <span class="font-bold text-sm text-slate-800 dark:text-slate-100 flex items-center gap-2">
+            <i data-lucide="layout-grid" class="w-4 h-4 text-brand-600"></i> Mục Lục Câu Hỏi
+          </span>
+          <button id="closeSidebarBtn" class="p-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+            <i data-lucide="x" class="w-5 h-5"></i>
+          </button>
+        </div>
+
+        <!-- Bộ Lọc Nhanh Chủ Đề & Dạng Câu -->
+        <div class="space-y-3 mt-2 lg:mt-0">
+          <div>
+            <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1.5 uppercase tracking-wider">Chủ đề kiến thức</label>
+            <select id="topicFilter" class="w-full text-xs font-medium bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500">
+              <option value="all">Tất cả các chủ đề (114 câu)</option>
+              <option value="topic1">1. Khái quát TĐC & NL ở SV (34 câu)</option>
+              <option value="topic2">2. Nước & Khoáng ở TV (30 câu)</option>
+              <option value="topic3">3. Quang hợp ở Thực vật (50 câu)</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1.5 uppercase tracking-wider">Dạng bài tập</label>
+            <select id="typeFilter" class="w-full text-xs font-medium bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500">
+              <option value="all">Tất cả định dạng</option>
+              <option value="mcq">Phần I: Trắc nghiệm 4 lựa chọn</option>
+              <option value="tf">Phần II: Câu hỏi Đúng / Sai</option>
+              <option value="short">Phần III: Trả lời ngắn</option>
+              <option value="essay">Phần IV: Tự luận có dàn ý</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Thống kê làm bài mini -->
+        <div class="my-4 p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-100 dark:border-slate-800 text-xs flex justify-between items-center">
+          <div class="flex items-center gap-1.5 text-slate-600 dark:text-slate-300">
+            <span class="w-2.5 h-2.5 rounded-full bg-brand-500 inline-block"></span>
+            <span>Đã làm: <b id="answeredCount" class="text-slate-900 dark:text-white font-semibold">0</b>/<span id="totalVisibleCount">114</span></span>
+          </div>
+          <button id="resetProgressBtn" class="text-rose-600 hover:text-rose-700 dark:text-rose-400 text-xs font-semibold flex items-center gap-1 hover:underline">
+            <i data-lucide="rotate-ccw" class="w-3 h-3"></i> Đặt lại
+          </button>
+        </div>
+
+        <!-- Chú thích màu sắc (Legend) -->
+        <div class="flex items-center justify-between text-[11px] text-slate-500 dark:text-slate-400 mb-2.5 px-1">
+          <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-md bg-slate-200 dark:bg-slate-700"></span> Chưa làm</span>
+          <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-md bg-sky-500 text-white"></span> Đã chọn</span>
+          <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-md bg-emerald-500 text-white"></span> Đúng</span>
+          <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-md bg-rose-500 text-white"></span> Sai</span>
+        </div>
+
+        <!-- Ma trận số câu hỏi (Palette) -->
+        <div class="overflow-y-auto max-h-[calc(100vh-380px)] lg:max-h-[500px] pr-1">
+          <div id="questionGrid" class="grid grid-cols-5 sm:grid-cols-6 lg:grid-cols-5 gap-2">
+            <!-- Render động bằng JavaScript -->
+          </div>
+        </div>
+      </aside>
+
+      <!-- Overlay khi mở Sidebar trên Mobile -->
+      <div id="sidebarOverlay" class="fixed inset-0 bg-slate-900/40 backdrop-blur-xs z-40 hidden lg:hidden"></div>
+
+      <!-- CỘT PHẢI: KHÔNG GIAN BÀI TẬP TRUNG TÂM (Main Quiz Area) -->
+      <section class="lg:col-span-8 space-y-6">
+        
+        <!-- THẺ CÂU HỎI HIỆN TẠI (CARD) -->
+        <div id="currentQuestionCard" class="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-2xl shadow-xs p-5 sm:p-7 transition-all">
+          
+          <!-- Metadata Tag Header -->
+          <div class="flex flex-wrap items-center justify-between gap-2.5 pb-4 border-b border-slate-100 dark:border-slate-800">
+            <div class="flex flex-wrap items-center gap-2">
+              <span id="badgeQuestionNumber" class="text-xs font-bold px-2.5 py-1 rounded-lg bg-brand-50 dark:bg-brand-950/60 text-brand-700 dark:text-brand-300 border border-brand-200/60 dark:border-brand-900">
+                Câu 1
+              </span>
+              <span id="badgeTopic" class="text-xs font-semibold px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
+                Khái quát TĐC & NL
+              </span>
+              <span id="badgeType" class="text-xs font-semibold px-2.5 py-1 rounded-lg bg-sky-50 dark:bg-sky-950/50 text-sky-700 dark:text-sky-300 border border-sky-100 dark:border-sky-900">
+                Trắc nghiệm 4 lựa chọn
+              </span>
+            </div>
+            <button id="bookmarkBtn" class="text-slate-400 hover:text-amber-500 transition-colors p-1" title="Đánh dấu câu hỏi cần xem lại">
+              <i data-lucide="bookmark" class="w-4 h-4"></i>
+            </button>
+          </div>
+
+          <!-- Nội dung câu hỏi -->
+          <div class="my-5">
+            <h2 id="questionPrompt" class="text-base sm:text-lg font-semibold leading-relaxed text-slate-900 dark:text-slate-100">
+              Đang tải nội dung câu hỏi...
+            </h2>
+
+            <!-- KHUNG HÌNH VẼ / BIỂU ĐỒ MINH HỌA (SVG Vector minh họa trực quan) -->
+            <div id="visualDiagramContainer" class="hidden my-5 p-4 bg-slate-50 dark:bg-slate-800/40 border border-slate-100 dark:border-slate-800 rounded-xl overflow-hidden flex flex-col items-center justify-center">
+              <!-- SVG sẽ được render tùy câu -->
+            </div>
+          </div>
+
+          <!-- KHUNG NỘI DUNG TƯƠNG TÁC THEO TỪNG DẠNG (MCQ, True/False, Short Answer, Essay) -->
+          <div id="interactiveArea" class="space-y-3">
+            <!-- Render động bằng JavaScript -->
+          </div>
+
+          <!-- KHUNG LỜI GIẢI THÍCH (ACCORDION - STUDY MODE) -->
+          <div id="explanationContainer" class="hidden mt-6 pt-5 border-t border-slate-100 dark:border-slate-800">
+            <div class="p-4 sm:p-5 rounded-xl bg-emerald-50/70 dark:bg-emerald-950/30 border border-emerald-200/70 dark:border-emerald-900/60 text-slate-800 dark:text-slate-200 text-sm">
+              <div class="flex items-center gap-2 font-bold text-emerald-800 dark:text-emerald-300 mb-2">
+                <i data-lucide="sparkles" class="w-4 h-4"></i> Hướng Dẫn & Lời Giải Chi Tiết
+              </div>
+              <div id="explanationContent" class="leading-relaxed text-slate-700 dark:text-slate-300 space-y-2">
+                <!-- Nội dung giải thích chi tiết -->
+              </div>
+            </div>
+          </div>
+
+          <!-- FOOTER CỦA THẺ: NÚT ĐIỀU HƯỚNG TRƯỚC / SAU / LÀM LẠI -->
+          <div class="mt-8 pt-5 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between gap-3">
+            <button id="prevQuestionBtn" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all flex items-center gap-1.5 active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed">
+              <i data-lucide="chevron-left" class="w-4 h-4"></i> Câu Trước
+            </button>
+
+            <div class="flex items-center gap-2">
+              <button id="retryQuestionBtn" class="hidden px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition-all items-center gap-1.5">
+                <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i> Làm lại câu này
+              </button>
+              <button id="nextQuestionBtn" class="px-5 py-2 rounded-xl text-xs sm:text-sm font-bold bg-brand-600 hover:bg-brand-700 text-white shadow-xs transition-all flex items-center gap-1.5 active:scale-95">
+                Câu Kế Tiếp <i data-lucide="chevron-right" class="w-4 h-4"></i>
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Mẹo làm bài EdTech -->
+        <div class="p-4 rounded-xl bg-slate-100/70 dark:bg-slate-900/50 border border-slate-200/60 dark:border-slate-800 text-xs text-slate-500 dark:text-slate-400 flex items-center gap-3">
+          <i data-lucide="lightbulb" class="w-5 h-5 text-amber-500 flex-shrink-0"></i>
+          <span><b>Mẹo ghi nhớ Sinh học:</b> Sử dụng <b>Chế độ Luyện tập</b> để vừa chọn vừa đối chiếu kiến thức lý thuyết và sơ đồ sinh học. Chuyển sang <b>Chế độ Thi thử</b> khi muốn kiểm tra tốc độ phản xạ trước ngày thi!</span>
+        </div>
+
+      </section>
+    </div>
+  </main>
+
+  <!-- ================= MODAL TỔNG KẾT THI THỬ (EXAM RESULT POPUP) ================= -->
+  <div id="resultModal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl transform transition-all text-center">
+      
+      <!-- Icon & Huy hiệu -->
+      <div id="badgeModalIcon" class="w-20 h-20 mx-auto rounded-3xl bg-emerald-100 dark:bg-emerald-950 flex items-center justify-center text-emerald-600 dark:text-emerald-400 mb-4 shadow-inner">
+        <i data-lucide="award" class="w-10 h-10"></i>
+      </div>
+
+      <h3 id="resultModalTitle" class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">
+        Kết Quả Bài Thi Thử
+      </h3>
+      <p id="resultModalSubtitle" class="text-sm text-slate-500 dark:text-slate-400 mt-1">
+        Bạn đã hoàn thành bài thi Sinh học 11 Giữa Kì
+      </p>
+
+      <!-- Điểm số lớn -->
+      <div class="my-6 p-5 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-100 dark:border-slate-800">
+        <div class="text-4xl sm:text-5xl font-extrabold text-brand-600 dark:text-brand-400 font-mono" id="scoreDisplay">
+          8.5 <span class="text-xl text-slate-400 font-normal">/ 10</span>
+        </div>
+        <div class="text-xs font-semibold text-slate-500 dark:text-slate-400 mt-2" id="scoreDetailStats">
+          Đúng: 65 | Sai: 10 | Chưa làm: 2
+        </div>
+      </div>
+
+      <!-- Thống kê theo chuyên đề -->
+      <div class="text-left space-y-2 mb-6 text-xs text-slate-600 dark:text-slate-300">
+        <div class="flex justify-between py-1 border-b border-slate-100 dark:border-slate-800">
+          <span>Khái quát TĐC & NL:</span>
+          <b id="scoreTopic1" class="font-semibold text-slate-800 dark:text-slate-200">-</b>
+        </div>
+        <div class="flex justify-between py-1 border-b border-slate-100 dark:border-slate-800">
+          <span>Trao đổi Nước & Khoáng:</span>
+          <b id="scoreTopic2" class="font-semibold text-slate-800 dark:text-slate-200">-</b>
+        </div>
+        <div class="flex justify-between py-1">
+          <span>Quang hợp ở Thực vật:</span>
+          <b id="scoreTopic3" class="font-semibold text-slate-800 dark:text-slate-200">-</b>
+        </div>
+      </div>
+
+      <!-- Thao tác nút -->
+      <div class="flex items-center gap-3">
+        <button id="reviewWrongBtn" class="flex-1 py-2.5 rounded-xl border border-rose-200 dark:border-rose-900 bg-rose-50 dark:bg-rose-950/50 text-rose-700 dark:text-rose-300 text-xs sm:text-sm font-bold hover:bg-rose-100 transition-all">
+          Xem Các Câu Làm Sai
+        </button>
+        <button id="closeModalBtn" class="flex-1 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-700 text-white text-xs sm:text-sm font-bold transition-all shadow-md">
+          Đóng & Xem Lời Giải
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ================= DỮ LIỆU ĐỀ CƯƠNG VÀ LOGIC JAVASCRIPT ================= -->
+  <script>
+    /**
+     * TOÀN BỘ DỮ LIỆU ĐỀ CƯƠNG SINH HỌC 11 GIỮA KÌ I
+     * Phân loại đầy đủ: Chủ đề 1, Chủ đề 2, Chủ đề 3 (TN, Đúng/Sai, Trả lời ngắn, Tự luận)
+     */
+    const quizData = [
+      // ----------------------------------------------------------------------------------
+      // CHỦ ĐỀ 1: KHÁI QUÁT VỀ TĐC VÀ NL Ở SINH VẬT
+      // ----------------------------------------------------------------------------------
+      // PHẦN I: TRẮC NGHIỆM TĐC VÀ CHNL (23 CÂU)
+      {
+        id: "T1_MCQ_1",
+        topic: "topic1",
+        topicName: "Khái quát TĐC & NL",
+        type: "mcq",
+        level: "Nhận biết",
+        prompt: "Câu 1. Năng lượng chủ yếu cung cấp cho sinh vật trên Trái Đất bắt nguồn từ:",
+        options: [
+          "Năng lượng ánh sáng và năng lượng nhiệt",
+          "Năng lượng nhiệt và năng lượng hóa học",
+          "Năng lượng ánh sáng và năng lượng hóa học",
+          "Năng lượng nhiệt và năng lượng ánh sáng"
+        ],
+        answer: 0,
+        explanation: "Năng lượng khởi đầu và chủ yếu cung cấp cho toàn bộ sinh vật trên Trái Đất bắt nguồn từ quang năng (ánh sáng mặt trời) và năng lượng nhiệt được hấp thụ."
+      },
+      {
+        id: "T1_MCQ_2",
+        topic: "topic1",
+        topicName: "Khái quát TĐC & NL",
+        type: "mcq",
+        level: "Nhận biết",
+        prompt: "Câu 2. Sinh vật tự dưỡng gồm:",
+        options: [
+          "Quang tự dưỡng và hóa tự dưỡng",
+          "Nhiệt tự dưỡng và ánh sáng tự dưỡng",
+          "Tiêu thụ và phân giải",
+          "Ánh sáng tự dưỡng và quang tự dưỡng"
+        ],
+        answer: 0,
+        explanation: "Dựa vào nguồn năng lượng sử dụng, sinh vật tự dưỡng được chia thành 2 nhóm chính: Sinh vật quang tự dưỡng (dùng ánh sáng) và Sinh vật hóa tự dưỡng (dùng năng lượng hóa học từ phản ứng oxy hóa)."
+      },
+      {
+        id: "T1_MCQ_3",
+        topic: "topic1",
+        topicName: "Khái quát TĐC & NL",
+        type: "mcq",
+        level: "Thông hiểu",
+        prompt: "Câu 3. Sinh vật có khả năng tự dưỡng là:",
+        options: ["Bò", "Gà", "Vi khuẩn lam", "Hổ"],
+        answer: 2,
+        explanation: "Vi khuẩn lam có chứa sắc tố quang hợp (chlorophyll và phycobilin) nên có khả năng quang tự dưỡng tổng hợp chất hữu cơ từ CO2 và nước."
+      },
+      {
+        id: "T1_MCQ_4",
+        topic: "topic1",
+        topicName: "Khái quát TĐC & NL",
+        type: "mcq",
+        level: "Nhận biết",
+        prompt: "Câu 4. Sinh vật không có khả năng tự dưỡng là:",
+        options: ["Thực vật", "Tảo", "Vi khuẩn lam", "Bò"],
+        answer: 3,
+        explanation: "Bò là động vật ăn cỏ, thuộc nhóm sinh vật dị dưỡng (sinh vật tiêu thụ), không thể tự tổng hợp chất hữu cơ từ chất vô cơ."
+      },
+      {
+        id: "T1_MCQ_5",
+        topic: "topic1",
+        topicName: "Khái quát TĐC & NL",
+        type: "mcq",
+        level: "Thông hiểu",
+        prompt: "Câu 5. Ở thực vật, năng lượng từ ánh sáng được tích luỹ trong các chất hữu cơ tổng hợp từ …(1)…, sau đó các chất hữu cơ được phân giải trong quá trình …(2)… để giải phóng năng lượng cung cấp cho các hoạt động sống. Các từ/cụm từ cần điền vào vị trí (1), (2) lần lượt là:",
+        options: [
+          "1 – quang hợp; 2 – trao đổi.",
+          "1 – trao đổi; 2 – quang hợp.",
+          "1 – quang hợp; 2 – hô hấp.",
+          "1 – hô hấp; 2 – quang hợp."
+        ],
+        answer: 2,
+        explanation: "(1) Quá trình quang hợp giúp tích lũy năng lượng trong liên kết hóa học; (2) Quá trình hô hấp tế bào bẻ gãy các liên kết để giải phóng ATP phục vụ sống."
+      },
+      {
+        id: "T1_MCQ_6",
+        topic: "topic1",
+        topicName: "Khái quát TĐC & NL",
+        type: "mcq",
+        level: "Thông hiểu",
+        prompt: "Câu 6. Thực vật thải …(1)… trong quang hợp, thải …(2)… trong hô hấp tế bào và bài tiết ure dư thừa qua các mô tiết ở lá. Các cụm từ thích hợp là:",
+        options: [
+          "1 – O2; 2 – CO2.",
+          "1 – CO2; 2 – O2.",
+          "1 – H2O; 2 – CO2.",
+          "1 – CO2; 2 – H2O."
+        ],
+        answer: 0,
+        explanation: "Quang phân li nước trong quang hợp giải phóng O2 ra ngoài; ngược lại, hô hấp tế bào phân giải hợp chất cacbon thải ra CO2."
+      },
+      {
+        id: "T1_MCQ_7",
+        topic: "topic1",
+        topicName: "Khái quát TĐC & NL",
+        type: "mcq",
+        level: "Thông hiểu",
+        prompt: "Câu 7. Ở thực vật, lá hấp thụ khí …(1)… từ không khí, rễ hấp thụ nước từ đất sau đó vận chuyển lên lá nhờ hệ thống …(2)… để quang hợp.",
+        options: [
+          "1 – O2; 2 – mạch gỗ.",
+          "1 – CO2; 2 – mạch gỗ.",
+          "1 – O2; 2 – mạch rây.",
+          "1 – CO2; 2 – mạch rây."
+        ],
+        answer: 1,
+        explanation: "Lá thu nhận CO2 qua khí khổng; rễ hút nước và khoáng đưa lên lá qua dòng mạch gỗ (xylem)."
+      },
+      {
+        id: "T1_MCQ_8",
+        topic: "topic1",
+        topicName: "Khái quát TĐC & NL",
+        type: "mcq",
+        level: "Nhận biết",
+        prompt: "Câu 8. Khí nào từ không khí được lá hấp thụ và hệ mạch nào vận chuyển nước từ rễ lên lá để phục vụ quá trình quang hợp?",
+        options: [
+          "1 – O2; 2 – mạch gỗ.",
+          "1 – CO2; 2 – mạch gỗ.",
+          "1 – O2; 2 – mạch rây.",
+          "1 – CO2; 2 – mạch rây."
+        ],
+        answer: 1,
+        explanation: "CO2 đi vào phiến lá qua khí khổng, mạch gỗ dẫn truyền dòng nhựa nguyên từ rễ lên phiến lá."
+      },
+      {
+        id: "T1_MCQ_9",
+        topic: "topic1",
+        topicName: "Khái quát TĐC & NL",
+        type: "mcq",
+        level: "Vận dụng",
+        prompt: "Câu 9. Khi gặp điều kiện khô hạn, cơ thể thực vật tổng hợp abscisic acid gây …(1)… trao đổi chất và chuyển hoá năng lượng làm cây rụng lá là dấu hiệu của sự …(2)…",
+        options: [
+          "1 – ức chế; 2 – bài tiết.",
+          "1 – ức chế; 2 – điều hòa.",
+          "1 – kích thích; 2 – bài tiết.",
+          "1 – kích thích; 2 – điều hòa."
+        ],
+        answer: 1,
+        explanation: "Hormone ABA gây ức chế quá trình sinh trưởng và trao đổi chất để thích nghi, bảo vệ cơ thể - đây là biểu hiện của cơ chế điều hòa hoạt động sống ở thực vật."
+      },
+      {
+        id: "T1_MCQ_10",
+        topic: "topic1",
+        topicName: "Khái quát TĐC & NL",
+        type: "mcq",
+        level: "Nhận biết",
+        prompt: "Câu 10. …(1)… là quá trình tổng hợp các chất phức tạp từ các chất đơn giản sẽ đi kèm với sự …(2)… năng lượng.",
+        options: [
+          "1 – đồng hóa; 2 – tích lũy.",
+          "1 – đồng hóa; 2 – phân giải.",
+          "1 – dị hóa; 2 – tích lũy.",
+          "1 – dị hóa; 2 – phân giải."
+        ],
+        answer: 0,
+        explanation: "Đồng hóa (Anabolism) là quá trình tổng hợp chất hữu cơ phức tạp kèm theo sự tích lũy năng lượng trong các liên kết hóa học."
+      },
+      {
+        id: "T1_MCQ_11",
+        topic: "topic1",
+        topicName: "Khái quát TĐC & NL",
+        type: "mcq",
+        level: "Nhận biết",
+        prompt: "Câu 11. Các sinh vật quang tự dưỡng chuyển hóa năng lượng ánh sáng thành:",
+        options: [
+          "Năng lượng nhiệt",
+          "Năng lượng cơ học",
+          "Năng lượng trong các hợp chất vô cơ",
+          "Năng lượng trong các hợp chất hữu cơ"
+        ],
+        answer: 3,
+        explanation: "Quang tự dưỡng biến quang năng mặt trời thành hóa năng dự trữ trong các hợp chất hữu cơ (carbohydrate, lipid, protein)."
+      },
+      {
+        id: "T1_MCQ_12",
+        topic: "topic1",
+        topicName: "Khái quát TĐC & NL",
+        type: "mcq",
+        level: "Thông hiểu",
+        prompt: "Câu 12. Năng lượng được giải phóng trong dị hoá cuối cùng cũng đều biến thành:",
+        options: ["Quang năng", "Hoá năng", "Nhiệt năng", "Cơ năng"],
+        answer: 2,
+        explanation: "Theo định luật nhiệt động lực học, mọi dạng năng lượng được giải phóng trong dị hóa cuối cùng đều phân tán vào môi trường dưới dạng nhiệt năng."
+      },
+      {
+        id: "T1_MCQ_13",
+        topic: "topic1",
+        topicName: "Khái quát TĐC & NL",
+        type: "mcq",
+        level: "Thông hiểu",
+        prompt: "Câu 13. Hợp chất hữu cơ do sinh vật tự dưỡng tổng hợp được sử dụng:",
+        options: [
+          "Cho các hoạt động sống và là nguồn cung cấp nguyên liệu, năng lượng cho các hoạt động sống của sinh vật khác",
+          "Cho các hoạt động sản xuất chất dinh dưỡng",
+          "Cho hoạt sống sinh sản và hoạt động sống của sinh vật khác",
+          "Cho việc tổng hợp các chất vô cơ cho sinh vật khác"
+        ],
+        answer: 0,
+        explanation: "Chất hữu cơ vừa nuôi sống chính sinh vật tự dưỡng, vừa là nguồn thức ăn và năng lượng khởi nguồn cho toàn bộ sinh vật dị dưỡng trong chuỗi thức ăn."
+      },
+      {
+        id: "T1_MCQ_14",
+        topic: "topic1",
+        topicName: "Khái quát TĐC & NL",
+        type: "mcq",
+        level: "Nhận biết",
+        prompt: "Câu 14. Sinh vật tự dưỡng đóng vai trò:",
+        options: [
+          "Là sinh vật sản xuất, chế biến nguyên liệu và năng lượng cho các sinh vật khác",
+          "Là sinh vật sản xuất, cung cấp nguyên liệu và năng lượng cho các sinh vật khác",
+          "Là sinh vật tiêu thụ, chế biến nguyên liệu và năng lượng cho các sinh vật khác",
+          "Là sinh vật tiêu thụ, cung cấp nguyên liệu và năng lượng cho các sinh vật khác"
+        ],
+        answer: 1,
+        explanation: "Sinh vật tự dưỡng là các sinh vật sản xuất sơ cấp trong hệ sinh thái."
+      },
+      {
+        id: "T1_MCQ_15",
+        topic: "topic1",
+        topicName: "Khái quát TĐC & NL",
+        type: "mcq",
+        level: "Nhận biết",
+        prompt: "Câu 15. Dị dưỡng là đặc điểm của nhóm sinh vật:",
+        options: [
+          "Có khả năng tổng hợp chất vô cơ thành chất hữu cơ",
+          "Có khả năng tổng hợp chất hữu cơ từ những chất hữu cơ có sẵn",
+          "Có khả năng tổng hợp chất dinh dưỡng thông qua quang hợp",
+          "Không có khả năng tổng hợp chất hữu cơ từ chất hữu cơ có sẵn"
+        ],
+        answer: 1,
+        explanation: "Sinh vật dị dưỡng lấy chất hữu cơ từ nguồn thức ăn sẵn có và biến đổi chúng thành các chất đặc trưng cho cơ thể mình."
+      },
+      {
+        id: "T1_MCQ_16",
+        topic: "topic1",
+        topicName: "Khái quát TĐC & NL",
+        type: "mcq",
+        level: "Nhận biết",
+        prompt: "Câu 16. Sinh vật dị dưỡng thường được phân thành:",
+        options: [
+          "Sinh vật tiêu thụ và sinh vật phân giải",
+          "Sinh vật hóa tổng hợp và sinh vật quang tổng hợp",
+          "Thực vật và động vật",
+          "Sinh vật ăn thực vật và sinh vật ăn động vật"
+        ],
+        answer: 0,
+        explanation: "Dị dưỡng gồm sinh vật tiêu thụ (động vật ăn thực vật, động vật ăn thịt) và sinh vật phân giải (vi nấm, vi khuẩn dị dưỡng phân hủy xác hữu cơ)."
+      },
+      {
+        id: "T1_MCQ_17",
+        topic: "topic1",
+        topicName: "Khái quát TĐC & NL",
+        type: "mcq",
+        level: "Nhận biết",
+        prompt: "Câu 17. Vi khuẩn lam là sinh vật:",
+        options: [
+          "Quang tự dưỡng",
+          "Hóa tự dưỡng",
+          "Dị dưỡng loại tiêu thụ",
+          "Dị dưỡng loại phân giải"
+        ],
+        answer: 0,
+        explanation: "Vi khuẩn lam có hệ thống quang hợp tạo O2 và dùng ánh sáng mặt trời -> Sinh vật quang tự dưỡng."
+      },
+      {
+        id: "T1_MCQ_18",
+        topic: "topic1",
+        topicName: "Khái quát TĐC & NL",
+        type: "mcq",
+        level: "Thông hiểu",
+        prompt: "Câu 18. Từ quá trình chuyển hóa vật chất và năng lượng trong sinh giới, khẳng định nào sau đây đúng?",
+        options: [
+          "Một phần năng lượng được các sinh vật dự trữ, một phần sử dụng cho các hoạt động sống, còn lại được thải vào môi trường ở dạng nhiệt",
+          "Hai phần năng lượng được các sinh vật dự trữ, một phần sử dụng cho các hoạt động sống, còn lại được chuyển thành cơ năng",
+          "Một phần năng lượng được các sinh vật dự trữ, hai phần sử dụng cho các hoạt động sống, còn lại được thải vào môi trường ở dạng nhiệt",
+          "Một phần năng lượng được các sinh vật dự trữ, một phần sử dụng cho các hoạt động sống, còn lại được chuyển thành cơ năng"
+        ],
+        answer: 0,
+        explanation: "Năng lượng thu nhận: một phần tích lũy dự trữ, một phần dùng để thực hiện công sống (sinh tổng hợp, vận động), và phần lớn phát tán ra môi trường dưới dạng nhiệt năng."
+      },
+      {
+        id: "T1_MCQ_19",
+        topic: "topic1",
+        topicName: "Khái quát TĐC & NL",
+        type: "mcq",
+        level: "Nhận biết",
+        prompt: "Câu 19. Quá trình chuyển hóa năng lượng trong sinh giới bao gồm:",
+        options: [
+          "Tiêu thụ, phân giải, huy động năng lượng",
+          "Hấp thu, phân giải và huy động năng lượng",
+          "Tổng hợp, phân giải và huy động năng lượng",
+          "Tái hấp thu, phân giải và huy động năng lượng"
+        ],
+        answer: 2,
+        explanation: "Chuyển hóa năng lượng trong sinh giới gồm 3 giai đoạn kế tiếp: Tổng hợp -> Phân giải -> Huy động năng lượng."
+      },
+      {
+        id: "T1_MCQ_20",
+        topic: "topic1",
+        topicName: "Khái quát TĐC & NL",
+        type: "mcq",
+        level: "Nhận biết",
+        prompt: "Câu 20. Cơ thể của sinh vật có thể tồn tại ở dạng:",
+        options: [
+          "Đơn bào hoặc đa bào",
+          "Tiêu thụ hoặc phân giải",
+          "Tất cả đều ở dạng đơn bào",
+          "Tất cả đều ở dạng đa bào"
+        ],
+        answer: 0,
+        explanation: "Sinh vật gồm cả dạng đơn bào (vi khuẩn, trùng roi...) và đa bào (thực vật, động vật)."
+      },
+      {
+        id: "T1_MCQ_21",
+        topic: "topic1",
+        topicName: "Khái quát TĐC & NL",
+        type: "mcq",
+        level: "Nhận biết",
+        prompt: "Câu 21. Sinh vật lấy các chất từ môi trường, biến đổi chúng thành các chất cần thiết cho cơ thể và tạo năng lượng cung cấp cho các hoạt động sống, đồng thời trả lại cho môi trường các chất thải, quá trình đó gọi là:",
+        options: ["Trao đổi chất", "Sự biến đổi", "Chất hữu cơ", "Chuyển hóa cơ bản"],
+        answer: 0,
+        explanation: "Định nghĩa chính xác về quá trình trao đổi chất của sinh vật với môi trường."
+      },
+      {
+        id: "T1_MCQ_22",
+        topic: "topic1",
+        topicName: "Khái quát TĐC & NL",
+        type: "mcq",
+        level: "Thông hiểu",
+        prompt: "Câu 22. Ví dụ về việc thu nhận các chất từ môi trường là:",
+        options: [
+          "Lá cây hấp thụ ánh sáng",
+          "Chuyển hóa tinh bột thành glucose",
+          "Quá trình quang hợp",
+          "Các chất không sử dụng được sẽ bị đào thải khỏi cơ thể"
+        ],
+        answer: 0,
+        explanation: "Lá cây hấp thụ quang năng và khí cacbonic từ không khí là hành vi thu nhận vật chất và năng lượng từ môi trường."
+      },
+      {
+        id: "T1_MCQ_23",
+        topic: "topic1",
+        topicName: "Khái quát TĐC & NL",
+        type: "mcq",
+        level: "Thông hiểu",
+        prompt: "Câu 23. Sinh vật có thể tồn tại, sinh trưởng, phát triển và thích nghi với môi trường sống nhờ có:",
+        options: [
+          "Trao đổi chất và sinh sản",
+          "Chuyển hóa năng lượng",
+          "Trao đổi chất và chuyển hóa năng lượng",
+          "Trao đổi chất và cảm ứng"
+        ],
+        answer: 2,
+        explanation: "Trao đổi chất và chuyển hóa năng lượng là dấu hiệu đặc trưng cơ bản nhất của sự sống."
+      },
+
+      // PHẦN II: CÂU HỎI ĐÚNG SAI TĐC & NL (4 CÂU)
+      {
+        id: "T1_TF_1",
+        topic: "topic1",
+        topicName: "Khái quát TĐC & NL",
+        type: "tf",
+        level: "Thông hiểu",
+        prompt: "Câu 1. Mỗi nhận định sau là đúng hay sai khi nói về vai trò của trao đổi chất và chuyển hóa năng lượng ở sinh vật?",
+        items: [
+          { text: "a. Bài tiết các chất độc hại ra khỏi cơ thể.", ans: true },
+          { text: "b. Cung cấp nguyên liệu xây dựng tế bào và cơ thể.", ans: true },
+          { text: "c. Cung cấp năng lượng cho các hoạt động sống của sinh vật.", ans: true },
+          { text: "d. Giúp sinh vật truyền lại các đặc điểm di truyền cho thế hệ sau.", ans: false }
+        ],
+        explanation: "Ý d Sai vì truyền đạt đặc điểm di truyền cho đời sau là vai trò của quá trình sinh sản và nhân đôi ADN, không phải vai trò trực tiếp của TĐC & CHNL."
+      },
+      {
+        id: "T1_TF_2",
+        topic: "topic1",
+        topicName: "Khái quát TĐC & NL",
+        type: "tf",
+        level: "Thông hiểu",
+        prompt: "Câu 2. Mỗi nhận định sau là đúng hay sai khi nói về dấu hiệu đặc trưng của quá trình trao đổi chất và chuyển hóa năng lượng ở sinh vật?",
+        items: [
+          { text: "a. Điều hòa hoạt động sống.", ans: true },
+          { text: "b. Giao phối và sinh sản tạo ra cá thể mới.", ans: false },
+          { text: "c. Biến đổi các chất và chuyển hóa năng lượng.", ans: true },
+          { text: "d. Thu nhận các chất từ môi trường và vận chuyển các chất.", ans: true }
+        ],
+        explanation: "Ý b Sai vì giao phối và sinh sản thuộc chức năng sinh sản ở sinh vật."
+      },
+      {
+        id: "T1_TF_3",
+        topic: "topic1",
+        topicName: "Khái quát TĐC & NL",
+        type: "tf",
+        level: "Vận dụng",
+        prompt: "Câu 3. Mỗi mệnh đề sau là đúng hay sai khi nói về các dấu hiệu đặc trưng của quá trình trao đổi chất và chuyển hóa năng lượng ở sinh vật?",
+        items: [
+          { text: "a. Tế bào không sử dụng các nguyên liệu nhận được để tổng hợp chất hữu cơ tham gia kiến tạo cơ thể và dự trữ năng lượng.", ans: false },
+          { text: "b. Chất dinh dưỡng và năng lượng từ môi trường sẽ được thu nhận nhờ các cơ quan chuyên biệt.", ans: true },
+          { text: "c. Chất dinh dưỡng qua hấp thụ sẽ được sử dụng hoàn toàn trực tiếp.", ans: false },
+          { text: "d. Các chất không được tế bào sử dụng sẽ được tái hấp thu.", ans: false }
+        ],
+        explanation: "a Sai (tế bào có sử dụng nguyên liệu để đồng hóa); c Sai (phải trải qua biến đổi/chuyển hóa); d Sai (các chất cặn bã không dùng sẽ bị đào thải bài tiết, không phải tái hấp thu hoàn toàn)."
+      },
+      {
+        id: "T1_TF_4",
+        topic: "topic1",
+        topicName: "Khái quát TĐC & NL",
+        type: "tf",
+        level: "Thông hiểu",
+        prompt: "Câu 4. Khi nói về vai trò của sinh vật tự dưỡng, mỗi mệnh đề sau là đúng hay sai?",
+        items: [
+          { text: "a. Cung cấp oxygen, điều hòa khí hậu.", ans: true },
+          { text: "b. Cung cấp nơi ở, nơi sinh sản cho động vật.", ans: true },
+          { text: "c. Phân giải chất thải, xác của các sinh vật khác.", ans: false },
+          { text: "d. Cung cấp vật chất và năng lượng cho sinh giới.", ans: true }
+        ],
+        explanation: "Ý c Sai vì phân giải xác và chất thải hữu cơ là chức năng của sinh vật phân giải (vi khuẩn, nấm hoại sinh), không phải tự dưỡng."
+      },
+
+      // PHẦN III: CÂU HỎI TRẢ LỜI NGẮN TĐC & NL (7 CÂU)
+      {
+        id: "T1_SHORT_1",
+        topic: "topic1",
+        topicName: "Khái quát TĐC & NL",
+        type: "short",
+        level: "Nhận biết",
+        prompt: "Câu 1. Quá trình chuyển hóa năng lượng trong sinh giới trải qua mấy giai đoạn?",
+        answer: "3",
+        explanation: "Đáp án: 3 giai đoạn (Tổng hợp, phân giải và huy động năng lượng)."
+      },
+      {
+        id: "T1_SHORT_2",
+        topic: "topic1",
+        topicName: "Khái quát TĐC & NL",
+        type: "short",
+        level: "Thông hiểu",
+        prompt: "Câu 2. Cho các dạng năng lượng: ADP, ATP, mỡ và glycogen, có bao nhiêu dạng năng lượng tích lũy ở dạng dễ sử dụng khi cơ thể người lấy từ môi trường oxygen, nước và thức ăn?",
+        answer: "1",
+        explanation: "Đáp án: 1 dạng duy nhất là ATP (đồng tiền năng lượng của tế bào, liên kết cao năng dễ bị thủy phân giải phóng năng lượng trực tiếp)."
+      },
+      {
+        id: "T1_SHORT_3",
+        topic: "topic1",
+        topicName: "Khái quát TĐC & NL",
+        type: "short",
+        level: "Thông hiểu",
+        prompt: "Câu 3. Trong số các chất: O2, H2O, CO2, thức ăn và chất khoáng, có bao nhiêu chất là chất cần thiết ở thực vật?",
+        answer: "4",
+        explanation: "Đáp án: 4 chất (Gồm O2 dùng cho hô hấp, H2O cho quang hợp/trao đổi nước, CO2 cho quang hợp, chất khoáng để cấu tạo và hoạt hóa enzyme; thực vật tự dưỡng nên không cần 'thức ăn' hữu cơ sẵn có)."
+      },
+      {
+        id: "T1_SHORT_4",
+        topic: "topic1",
+        topicName: "Khái quát TĐC & NL",
+        type: "short",
+        level: "Thông hiểu",
+        prompt: "Câu 4. Trong số các chất: O2, H2O, CO2, thức ăn và chất khoáng, có bao nhiêu chất là chất cần thiết ở động vật?",
+        answer: "3",
+        explanation: "Đáp án: 3 chất (Gồm O2 để hô hấp tế bào, H2O để duy trì dung môi sinh học và Thức ăn để cung cấp chất hữu cơ/năng lượng)."
+      },
+      {
+        id: "T1_SHORT_5",
+        topic: "topic1",
+        topicName: "Khái quát TĐC & NL",
+        type: "short",
+        level: "Nhận biết",
+        prompt: "Câu 5. Dựa vào nhu cầu nguồn năng lượng, sinh vật tự dưỡng được chia thành mấy nhóm?",
+        answer: "2",
+        explanation: "Đáp án: 2 nhóm (Sinh vật quang tự dưỡng sử dụng ánh sáng và Sinh vật hóa tự dưỡng sử dụng năng lượng từ phản ứng hóa học vô cơ)."
+      },
+      {
+        id: "T1_SHORT_6",
+        topic: "topic1",
+        topicName: "Khái quát TĐC & NL",
+        type: "short",
+        level: "Vận dụng",
+        prompt: "Câu 6. Cho các sinh vật: (a) Cây chuối, (b) Vi khuẩn lam, (c) Nấm da đầu, (d) Tảo lục, (e) Trùng giày, (f) Con bò, (g) Vi khuẩn trong ruột mối, (h) Rong đuôi chó, (i) San hô, (k) Giun sán. Có bao nhiêu sinh vật dị dưỡng?",
+        answer: "6",
+        explanation: "Đáp án: 6 sinh vật dị dưỡng gồm: c (Nấm da đầu), e (Trùng giày), f (Con bò), g (Vi khuẩn trong ruột mối), i (San hô), k (Giun sán). Các sinh vật tự dưỡng là a, b, d, h."
+      },
+      {
+        id: "T1_SHORT_7",
+        topic: "topic1",
+        topicName: "Khái quát TĐC & NL",
+        type: "short",
+        level: "Vận dụng",
+        prompt: "Câu 7. Trong các sinh vật ở câu trên: (a) Cây chuối, (b) Vi khuẩn lam, (c) Nấm da đầu, (d) Tảo lục, (e) Trùng giày, (f) Con bò, (g) Vi khuẩn trong ruột mối, (h) Rong đuôi chó, (i) San hô, (k) Giun sán. Có bao nhiêu sinh vật tự dưỡng?",
+        answer: "4",
+        explanation: "Đáp án: 4 sinh vật tự dưỡng gồm: a (Cây chuối), b (Vi khuẩn lam), d (Tảo lục), h (Rong đuôi chó)."
+      },
+
+      // ----------------------------------------------------------------------------------
+      // CHỦ ĐỀ 2: TRAO ĐỔI NƯỚC VÀ MUỐI KHOÁNG Ở THỰC VẬT
+      // ----------------------------------------------------------------------------------
+      // PHẦN I: TRẮC NGHIỆM TĐN VÀ KHOÁNG (22 CÂU)
+      {
+        id: "T2_MCQ_1",
+        topic: "topic2",
+        topicName: "Nước & Khoáng ở TV",
+        type: "mcq",
+        level: "Vận dụng",
+        prompt: "Câu 1. Cách nhận biết rõ rệt nhất thời điểm cây bị thiếu nguyên tố khoáng và cần bón phân là căn cứ vào:",
+        options: [
+          "biểu hiện của quả non.",
+          "biểu hiện của thân cây.",
+          "biểu hiện của màu sắc hoa.",
+          "biểu hiện của lá cây."
+        ],
+        answer: 3,
+        explanation: "Lá cây là cơ quan phản ánh sự thiếu hụt dinh dưỡng khoáng nhanh và rõ nét nhất qua màu sắc (vàng lá, gân xanh, đốm hoại tử) và hình thái phiến lá."
+      },
+      {
+        id: "T2_MCQ_2",
+        topic: "topic2",
+        topicName: "Nước & Khoáng ở TV",
+        type: "mcq",
+        level: "Thông hiểu",
+        prompt: "Câu 2. Nguyên tố vi lượng chỉ cần với một hàm lượng rất nhỏ nhưng nếu không có nó thì cây sẽ còi cọc và có thể bị chết. Nguyên nhân là vì các nguyên tố vi lượng có vai trò?",
+        options: [
+          "tham gia cấu trúc nên tế bào.",
+          "hoạt hóa enzyme trong trao đổi chất.",
+          "quy định áp suất thẩm thấu của dịch tế bào.",
+          "thúc đẩy quá trình chín của quả và hạt."
+        ],
+        answer: 1,
+        explanation: "Các nguyên tố vi lượng đóng vai trò là cofactor hoặc thành phần cấu tạo coenzyme hoạt hóa các hệ enzyme xúc tác quá trình sinh hóa."
+      },
+      {
+        id: "T2_MCQ_3",
+        topic: "topic2",
+        topicName: "Nước & Khoáng ở TV",
+        type: "mcq",
+        level: "Nhận biết",
+        prompt: "Câu 3. Nguyên tố đa lượng đóng vai trò chủ yếu trong cơ thể thực vật là:",
+        options: [
+          "tham gia cấu trúc nên tế bào.",
+          "hoạt hóa enzyme trong trao đổi chất.",
+          "quy định áp suất thẩm thấu của dịch tế bào.",
+          "thúc đẩy quá trình chín của quả và hạt."
+        ],
+        answer: 0,
+        explanation: "Nguyên tố đa lượng (C, H, O, N, P, K, S, Ca, Mg) chiếm hàm lượng lớn và là thành phần xây dựng nên các đại phân tử sinh học cấu tạo tế bào."
+      },
+      {
+        id: "T2_MCQ_4",
+        topic: "topic2",
+        topicName: "Nước & Khoáng ở TV",
+        type: "mcq",
+        level: "Vận dụng",
+        prompt: "Câu 4. Khi cây bị vàng úa do thiếu diệp lục, đưa vào gốc hoặc phun lên lá ion khoáng loại nào sau đây lá cây sẽ nhanh chóng xanh trở lại?",
+        options: ["Mg2+", "Ca2+", "Fe3+", "Na+"],
+        answer: 0,
+        explanation: "Magnesium (Mg2+) là nguyên tố kim loại trung tâm trong vòng porphyrin của phân tử diệp lục (chlorophyll)."
+      },
+      {
+        id: "T2_MCQ_5",
+        topic: "topic2",
+        topicName: "Nước & Khoáng ở TV",
+        type: "mcq",
+        level: "Nhận biết",
+        prompt: "Câu 5. Quá trình trao đổi nước và khoáng ở thực vật diễn ra theo thứ tự nào sau đây?",
+        options: [
+          "Hấp thụ nước ở rễ -> thoát hơi nước ở lá -> vận chuyển nước ở thân.",
+          "Hấp thụ nước ở rễ -> vận chuyển nước ở thân -> thoát hơi nước ở lá.",
+          "Vận chuyển nước ở thân -> thoát hơi nước ở lá -> hấp thụ nước ở rễ.",
+          "Vận chuyển nước ở thân -> hấp thụ nước ở rễ -> thoát hơi nước ở lá."
+        ],
+        answer: 1,
+        explanation: "Trình tự liên tục của dòng nước trong cây: Rễ hấp thụ -> Thân vận chuyển qua mạch gỗ -> Lá thoát hơi nước tạo động lực hút."
+      },
+      {
+        id: "T2_MCQ_6",
+        topic: "topic2",
+        topicName: "Nước & Khoáng ở TV",
+        type: "mcq",
+        level: "Nhận biết",
+        prompt: "Câu 6. Các nguyên tố khoáng được rễ cây hấp thụ chủ yếu dưới dạng:",
+        options: ["hợp chất phức tạp.", "đơn chất kim loại.", "chất kết tủa.", "ion hòa tan."],
+        answer: 3,
+        explanation: "Cây chỉ hấp thụ được muối khoáng khi chúng phân ly thành các ion hòa tan (cation và anion) trong dung dịch đất."
+      },
+      {
+        id: "T2_MCQ_7",
+        topic: "topic2",
+        topicName: "Nước & Khoáng ở TV",
+        type: "mcq",
+        level: "Thông hiểu",
+        prompt: "Câu 7. Sự hấp thụ và trao đổi khoáng thường gắn liền mật thiết với sự trao đổi nước vì:",
+        options: [
+          "các nguyên tố khoáng không tan trong nước.",
+          "các nguyên tố khoáng liên kết với nước.",
+          "các nguyên tố khoáng hòa tan trong nước.",
+          "các nguyên tố khoáng có chứa nước."
+        ],
+        answer: 2,
+        explanation: "Nước đóng vai trò là dung môi hòa tan các muối khoáng, giúp ion khoáng di chuyển theo dòng thẩm thấu vào rễ và lên thân."
+      },
+      {
+        id: "T2_MCQ_8",
+        topic: "topic2",
+        topicName: "Nước & Khoáng ở TV",
+        type: "mcq",
+        level: "Nhận biết",
+        prompt: "Câu 8. Ở thực vật trên cạn, nước và khoáng từ đất được hấp thụ vào cây chủ yếu nhờ các:",
+        options: [
+          "tế bào biểu bì của toàn bộ cây.",
+          "tế bào mạch gỗ ở rễ.",
+          "tế bào mạch rây ở rễ.",
+          "lông hút ở rễ."
+        ],
+        answer: 3,
+        explanation: "Lông hút (biến dạng của tế bào biểu bì rễ) làm tăng tối đa diện tích tiếp xúc giữa rễ với dung dịch đất."
+      },
+      {
+        id: "T2_MCQ_9",
+        topic: "topic2",
+        topicName: "Nước & Khoáng ở TV",
+        type: "mcq",
+        level: "Thông hiểu",
+        prompt: "Câu 9. Ở thực vật thủy sinh (sống chìm trong nước), nước và khoáng được hấp thụ nhờ:",
+        options: [
+          "tế bào biểu bì của toàn bộ cây.",
+          "mạch gỗ ở rễ.",
+          "lông hút ở lá.",
+          "lông hút ở rễ."
+        ],
+        answer: 0,
+        explanation: "Thực vật ngập hoàn toàn trong nước hấp thụ nước và khoáng trực tiếp qua bề mặt biểu bì mỏng của toàn bộ cơ thể."
+      },
+      {
+        id: "T2_MCQ_10",
+        topic: "topic2",
+        topicName: "Nước & Khoáng ở TV",
+        type: "mcq",
+        level: "Thông hiểu",
+        prompt: "Câu 10. Khi nói đến quá trình vận chuyển nước trong cây, phát biểu nào sau đây SAI?",
+        options: [
+          "Chịu ảnh hưởng của áp suất rễ.",
+          "Liên quan với lực đẩy do áp suất rễ.",
+          "Cùng chiều với chiều của trọng lực.",
+          "Liên quan với lực hút do thoát hơi nước ở lá."
+        ],
+        answer: 2,
+        explanation: "Phát biểu C Sai vì dòng mạch gỗ vận chuyển nước ngược chiều trọng lực (từ dưới gốc rễ lên ngọn lá)."
+      },
+      {
+        id: "T2_MCQ_11",
+        topic: "topic2",
+        topicName: "Nước & Khoáng ở TV",
+        type: "mcq",
+        level: "Nhận biết",
+        prompt: "Câu 11. Tế bào lông hút ở rễ cây được hình thành từ loại tế bào nào?",
+        options: [
+          "Tế bào nội bì.",
+          "Tế bào biểu bì thân.",
+          "Tế bào biểu bì rễ.",
+          "Mạch rây của rễ."
+        ],
+        answer: 2,
+        explanation: "Lông hút thực chất là phần kéo dài ra ngoài của tế bào biểu bì ở miền hút của rễ."
+      },
+      {
+        id: "T2_MCQ_12",
+        topic: "topic2",
+        topicName: "Nước & Khoáng ở TV",
+        type: "mcq",
+        level: "Nhận biết",
+        prompt: "Câu 12. Rễ cây hấp thu khoáng từ đất vào tế bào lông hút theo cơ chế nào?",
+        options: [
+          "Chỉ theo cơ chế thẩm thấu.",
+          "Hấp thụ chủ động.",
+          "Hấp thụ thụ động.",
+          "Hấp thụ chủ động và hấp thụ thụ động."
+        ],
+        answer: 3,
+        explanation: "Ion khoáng vào rễ theo 2 cơ chế: Thụ động (theo gradient nồng độ) và Chủ động (ngược gradient nồng độ, tiêu tốn ATP và cần chất mang)."
+      },
+      {
+        id: "T2_MCQ_13",
+        topic: "topic2",
+        topicName: "Nước & Khoáng ở TV",
+        type: "mcq",
+        level: "Thông hiểu",
+        prompt: "Câu 13. Sự thoát hơi nước ở lá chủ yếu diễn ra qua con đường khí khổng thay vì tầng cutin vì con đường này:",
+        options: [
+          "Có vận tốc lớn, không được điều chỉnh.",
+          "Có vận tốc lớn, được điều chỉnh bằng cơ chế đóng mở khí khổng.",
+          "Có vận tốc nhỏ, không được điều chỉnh.",
+          "Có vận tốc nhỏ, được điều chỉnh bằng cơ chế đóng mở khí khổng."
+        ],
+        answer: 1,
+        explanation: "Thoát hơi nước qua khí khổng chiếm phần lớn lượng nước thoát ra, vận tốc lớn và được điều hòa linh hoạt theo hàm lượng nước trong tế bào hạt đậu."
+      },
+      {
+        id: "T2_MCQ_14",
+        topic: "topic2",
+        topicName: "Nước & Khoáng ở TV",
+        type: "mcq",
+        level: "Thông hiểu",
+        prompt: "Câu 14. Biểu bì lá của những loài thực vật sống ở vùng khô hạn có đặc điểm thích nghi nào?",
+        options: [
+          "Biểu bì mặt dưới của lá được phủ bởi lớp cutin dày.",
+          "Biểu bì mặt trên của lá được phủ bởi lớp cutin dày, có rất ít hoặc không có khí khổng.",
+          "Biểu bì mặt dưới của lá được phủ bởi lớp cutin dày, không có lỗ khí.",
+          "Biểu bì mặt trên của lá có rất nhiều tế bào khí khổng."
+        ],
+        answer: 1,
+        explanation: "Lớp cutin mặt trên dày giúp ngăn chặn tối đa sự bốc hơi nước do ánh nắng gay gắt, khí khổng tập trung ở mặt dưới hoặc thụt sâu."
+      },
+      {
+        id: "T2_MCQ_15",
+        topic: "topic2",
+        topicName: "Nước & Khoáng ở TV",
+        type: "mcq",
+        level: "Thông hiểu",
+        prompt: "Câu 15. Tác nhân nào trực tiếp điều tiết độ đóng mở của tế bào khí khổng?",
+        options: [
+          "Cường độ quang hợp và nồng độ CO2 trong không khí.",
+          "Hàm lượng nước trong tế bào khí khổng.",
+          "Nồng độ CO2 trong không khí.",
+          "Nhiệt độ môi trường."
+        ],
+        answer: 1,
+        explanation: "Sự no nước hay mất nước của 2 tế bào hình hạt đậu làm thay đổi độ cong của thành mỏng bên ngoài, từ đó trực tiếp làm đóng mở khe khí khổng."
+      },
+      {
+        id: "T2_MCQ_16",
+        topic: "topic2",
+        topicName: "Nước & Khoáng ở TV",
+        type: "mcq",
+        level: "Vận dụng",
+        prompt: "Câu 16. Cây trên cạn khi bị ngập úng lâu ngày sẽ bị héo và chết. Trong các giải thích sau:\n(I) Thừa oxi hạn chế hô hấp và tích luỹ chất độc.\n(II) Lông hút bị chết và không hình thành lông hút mới.\n(III) Cây sẽ hấp thụ được nước và khoáng quá nhiều.\n(IV) Tăng quá trình lên men gây tích lũy độc tố, lông hút chết làm cây không hút được nước.\nCó bao nhiêu giải thích đúng?",
+        options: ["1", "2", "3", "4"],
+        answer: 1,
+        explanation: "Có 2 giải thích đúng là (II) và (IV). Trong đất ngập úng thiếu O2 dẫn đến rễ hô hấp kị khí, tích lũy độc tố (rượu, acid), lông hút bị tiêu biến khiến cây không hút được nước nên chết héo."
+      },
+      {
+        id: "T2_MCQ_17",
+        topic: "topic2",
+        topicName: "Nước & Khoáng ở TV",
+        type: "mcq",
+        level: "Vận dụng",
+        prompt: "Câu 17. Ở miền Bắc nước ta, về mùa đông khi nhiệt độ hạ thấp rét hại thì mạ non thường bị chết. Nguyên nhân chủ yếu là vì nhiệt độ thấp làm tổn thương …(1)…, cây không hấp thụ được …(2)…, cây héo chết.",
+        options: [
+          "1 – rễ; 2 – nước.",
+          "1 – rễ; 2 – ion khoáng.",
+          "1 – lá; 2 – ion khoáng.",
+          "1 – lá; 2 – nước."
+        ],
+        answer: 0,
+        explanation: "Rét hại ức chế hoạt động sinh lý của tế bào rễ, làm tổn thương cấu trúc màng lông hút khiến rễ không hút được nước, trong khi lá vẫn thoát hơi nước dẫn đến cây bị héo chết rét."
+      },
+      {
+        id: "T2_MCQ_18",
+        topic: "topic2",
+        topicName: "Nước & Khoáng ở TV",
+        type: "mcq",
+        level: "Vận dụng",
+        prompt: "Câu 18. Trong trồng trọt, khi nhổ cây con đem cấy ra ruộng người ta thường bấm ngắt bớt chóp rễ chính nhằm mục đích gì?",
+        options: [
+          "Thay đổi mật độ cây giúp cây sử dụng tốt ánh sáng và dinh dưỡng.",
+          "Chóp rễ đứt sẽ kích thích sự ra nhiều rễ con bên để hút được nhiều nước, muối khoáng.",
+          "Tiết kiệm được cây giống vì có thể thay đổi mật độ mà không phải bỏ bớt cây con.",
+          "Giúp cây tận dụng dinh dưỡng cả đất gieo và đất cấy."
+        ],
+        answer: 1,
+        explanation: "Ngắt chóp rễ phá vỡ ưu thế ngọn ở hệ rễ, kích thích phân nhánh tạo mạng lưới rễ con và lông hút mới dồi dào."
+      },
+      {
+        id: "T2_MCQ_19",
+        topic: "topic2",
+        topicName: "Nước & Khoáng ở TV",
+        type: "mcq",
+        level: "Nhận biết",
+        prompt: "Câu 19. Mạch gỗ (xylem) ở thực vật được cấu tạo từ hai loại tế bào chết đã hóa gỗ là:",
+        options: [
+          "Biểu bì và nội bì.",
+          "Biểu bì và mạch ống.",
+          "Quản bào và Mạch ống.",
+          "Biểu bì và lông hút."
+        ],
+        answer: 2,
+        explanation: "Mạch gỗ gồm quản bào (tracheid) và mạch ống (vessel element) rỗng, không bào quan, vách dày thấm lignin."
+      },
+      {
+        id: "T2_MCQ_20",
+        topic: "topic2",
+        topicName: "Nước & Khoáng ở TV",
+        type: "mcq",
+        level: "Nhận biết",
+        prompt: "Câu 20. Mạch rây (phloem) trong thân cây được cấu tạo từ các loại tế bào sống là:",
+        options: [
+          "tế bào ống rây và tế bào kèm.",
+          "quản bào và mạch ống.",
+          "quản bào và ống rây.",
+          "tế bào ống rây và mạch ống."
+        ],
+        answer: 0,
+        explanation: "Mạch rây gồm các tế bào ống rây xếp nối tiếp nhau và các tế bào kèm nằm sát bên cung cấp năng lượng ATP cho quá trình tải đường."
+      },
+      {
+        id: "T2_MCQ_21",
+        topic: "topic2",
+        topicName: "Nước & Khoáng ở TV",
+        type: "mcq",
+        level: "Nhận biết",
+        prompt: "Câu 21. Thành phần chủ yếu hòa tan trong dịch mạch rây là:",
+        options: [
+          "Các chất hữu cơ (chủ yếu là sucrose) được tổng hợp ở lá.",
+          "Các chất hữu cơ được tổng hợp ở thân.",
+          "Các chất hữu cơ được tổng hợp ở rễ.",
+          "Các chất vô cơ được tổng hợp ở lá."
+        ],
+        answer: 0,
+        explanation: "Dịch mạch rây vận chuyển sucrose, amino acid và hormone từ nguồn (lá quang hợp) đến bồn chứa (rễ, củ, quả, chồi)."
+      },
+      {
+        id: "T2_MCQ_22",
+        topic: "topic2",
+        topicName: "Nước & Khoáng ở TV",
+        type: "mcq",
+        level: "Nhận biết",
+        prompt: "Câu 22. Thành phần chủ yếu cấu thành nên dịch mạch gỗ là:",
+        options: [
+          "nước và các ion khoáng.",
+          "nước và các chất hữu cơ.",
+          "các ion khoáng hòa tan đậm đặc.",
+          "các hợp chất hữu cơ vận chuyển xuống rễ."
+        ],
+        answer: 0,
+        explanation: "Dịch mạch gỗ gồm nước và các ion khoáng do rễ hấp thụ từ đất cùng một số hợp chất hữu cơ được tổng hợp ở rễ."
+      },
+
+      // PHẦN II: CÂU HỎI ĐÚNG SAI NƯỚC & KHOÁNG (3 CÂU)
+      {
+        id: "T2_TF_1",
+        topic: "topic2",
+        topicName: "Nước & Khoáng ở TV",
+        type: "tf",
+        level: "Thông hiểu",
+        prompt: "Câu 1. Mỗi nhận định sau là đúng hay sai khi nói về vai trò sinh lý của quá trình thoát hơi nước?",
+        items: [
+          { text: "a. Tạo lực hút đầu trên kéo dòng nước và khoáng trong mạch gỗ.", ans: true },
+          { text: "b. Khí khổng mở cho CO2 khuếch tán vào lá cung cấp cho quang hợp.", ans: true },
+          { text: "c. Giúp hạ nhiệt độ của lá cây vào những ngày nắng nóng gay gắt.", ans: true },
+          { text: "d. Giải phóng O2 giúp điều hòa không khí.", ans: false }
+        ],
+        explanation: "Ý d Sai vì giải phóng O2 là kết quả của quang phân li nước trong quang hợp, không phải vai trò của thoát hơi nước."
+      },
+      {
+        id: "T2_TF_2",
+        topic: "topic2",
+        topicName: "Nước & Khoáng ở TV",
+        type: "tf",
+        level: "Thông hiểu",
+        prompt: "Câu 2. Mỗi nhận định sau là đúng hay sai khi nói về vai trò của nguyên tố nitrogen trong cơ thể thực vật?",
+        items: [
+          { text: "a. Tham gia điều tiết các quá trình sinh lí (thành phần enzyme, hormone,...).", ans: true },
+          { text: "b. Tham gia cấu tạo tế bào và cơ thể (protein, nucleic acid, diệp lục, ATP,...).", ans: true },
+          { text: "c. Tham gia giữ cân bằng nước và cơ chế đóng mở khí khổng.", ans: false },
+          { text: "d. Nitrogen là nguyên tố dinh dưỡng khoáng thiết yếu.", ans: true }
+        ],
+        explanation: "Ý c Sai vì điều hòa áp suất thẩm thấu và đóng mở khí khổng là vai trò chủ yếu của ion Kali (K+), không phải Nitrogen."
+      },
+      {
+        id: "T2_TF_3",
+        topic: "topic2",
+        topicName: "Nước & Khoáng ở TV",
+        type: "tf",
+        level: "Thông hiểu",
+        prompt: "Câu 3. Mỗi nhận định sau là đúng hay sai khi nói về các nguồn và hoạt động cung cấp nitrogen cho cây hấp thụ?",
+        items: [
+          { text: "a. Hoạt động cố định nitrogen khí quyển của các vi sinh vật (nốt sần nấm/vi khuẩn lam).", ans: true },
+          { text: "b. Sự cung cấp nitrogen qua bón phân hóa học và phân hữu cơ.", ans: true },
+          { text: "c. Hoạt động của nhóm vi khuẩn amon hóa và nitrat hóa phân giải xác sinh vật.", ans: true },
+          { text: "d. Sự phóng điện trong khí quyển khi có sấm sét tạo gốc nitrate.", ans: true }
+        ],
+        explanation: "Tất cả 4 nhận định đều Đúng! Đây là 4 con đường tự nhiên và nhân tạo cung cấp NH4+ và NO3- cho đất."
+      },
+
+      // PHẦN III: CÂU HỎI TRẢ LỜI NGẮN NƯỚC & KHOÁNG (5 CÂU)
+      {
+        id: "T2_SHORT_1",
+        topic: "topic2",
+        topicName: "Nước & Khoáng ở TV",
+        type: "short",
+        level: "Thông hiểu",
+        prompt: "Câu 1. Quá trình hấp thụ chủ động các ion khoáng cần sự góp phần của bao nhiêu yếu tố trong các yếu tố sau?\n(1) Năng lượng dưới dạng ATP.\n(2) Tính thấm chọn lọc của màng sinh chất.\n(3) Bào quan lưới nội chất và bộ máy Golgi.\n(4) Enzyme hoạt tải (protein chất mang).",
+        answer: "3",
+        explanation: "Đáp án: 3 yếu tố (Gồm 1, 2, 4. Yếu tố 3 không trực tiếp tham gia cơ chế vận chuyển ion qua màng)."
+      },
+      {
+        id: "T2_SHORT_2",
+        topic: "topic2",
+        topicName: "Nước & Khoáng ở TV",
+        type: "short",
+        level: "Thông hiểu",
+        prompt: "Câu 2. Trong các đặc điểm dưới đây, tế bào lông hút của rễ cây có bao nhiêu đặc điểm cấu tạo phù hợp chức năng?\n(1) Thành tế bào mỏng, bề mặt thấm cutin dày.\n(2) Không bào trung tâm lớn chứa nhiều dịch phân tử.\n(3) Có áp suất thẩm thấu lớn so với dung dịch đất.\n(4) Số lượng cực kì nhiều tạo bề mặt tiếp xúc lớn.",
+        answer: "3",
+        explanation: "Đáp án: 3 đặc điểm đúng là (2), (3), (4). Đặc điểm (1) sai vì lông hút KHÔNG thấm cutin để nước dễ dàng thẩm thấu qua."
+      },
+      {
+        id: "T2_SHORT_3",
+        topic: "topic2",
+        topicName: "Nước & Khoáng ở TV",
+        type: "short",
+        level: "Vận dụng",
+        prompt: "Câu 3. Có bao nhiêu biện pháp nông học sau đây giúp cho bộ rễ cây trồng phát triển khỏe mạnh?\n(1) Phơi ải đất, cày sâu, bừa kĩ cho đất tơi xốp thoáng khí.\n(2) Tưới đủ nước và bón phân hữu cơ ủ hoai mục.\n(3) Tăng cường bón thật nhiều phân hóa học nồng độ cao.\n(4) Vun gốc và xới xáo đất định kỳ.",
+        answer: "3",
+        explanation: "Đáp án: 3 biện pháp (Gồm 1, 2, 4. Biện pháp 3 sai vì bón thừa phân vô cơ làm tăng áp suất thẩm thấu đất khiến rễ bị teo héo và ngộ độc)."
+      },
+      {
+        id: "T2_SHORT_4",
+        topic: "topic2",
+        topicName: "Nước & Khoáng ở TV",
+        type: "short",
+        level: "Nhận biết",
+        prompt: "Câu 4. Cho các dạng nitrogen sau: N2, NH4+, NO, nitrogen hữu cơ, NO3- và NO2. Cây trồng chỉ hấp thụ trực tiếp được bao nhiêu dạng?",
+        answer: "2",
+        explanation: "Đáp án: 2 dạng khoáng vô cơ hòa tan là Amoni (NH4+) và Nitrate (NO3-)."
+      },
+      {
+        id: "T2_SHORT_5",
+        topic: "topic2",
+        topicName: "Nước & Khoáng ở TV",
+        type: "short",
+        level: "Vận dụng",
+        prompt: "Câu 5. Có bao nhiêu đặc điểm hình thái và sinh lý dưới đây giúp lá cây thích nghi với việc hạn chế mất nước trong mùa khô hạn?\n(1) Phiến lá thu nhỏ hoặc biến đổi thành gai.\n(2) Tầng cutin bao bọc bề mặt dày.\n(3) Cây rụng lá vào mùa khô hạn.\n(4) Khí khổng đóng ban ngày, mở vào ban đêm.",
+        answer: "4",
+        explanation: "Đáp án: 4 đặc điểm (Cả 4 đặc điểm đều là cơ chế tiến hóa tiết kiệm nước đặc trưng ở thực vật chịu hạn và thực vật CAM)."
+      },
+
+      // ----------------------------------------------------------------------------------
+      // CHỦ ĐỀ 3: QUANG HỢP Ở THỰC VẬT
+      // ----------------------------------------------------------------------------------
+      // PHẦN I: TRẮC NGHIỆM QUANG HỢP (32 CÂU)
+      {
+        id: "T3_MCQ_1",
+        topic: "topic3",
+        topicName: "Quang hợp ở Thực vật",
+        type: "mcq",
+        level: "Nhận biết",
+        prompt: "Câu 1. Loại khí đóng vai trò là nguyên liệu chính của quá trình quang hợp là:",
+        options: ["H2", "CO2", "H2O", "O2"],
+        answer: 1,
+        explanation: "Khí Carbon dioxide (CO2) được cố định trong pha tối để tổng hợp nên carbohydrate."
+      },
+      {
+        id: "T3_MCQ_2",
+        topic: "topic3",
+        topicName: "Quang hợp ở Thực vật",
+        type: "mcq",
+        level: "Nhận biết",
+        prompt: "Câu 2. Sản phẩm hữu cơ chủ yếu được tạo ra từ quá trình quang hợp là:",
+        options: ["Gluxit", "Muối khoáng", "Carbohydrate", "Protein"],
+        answer: 2,
+        explanation: "Sản phẩm trực tiếp của chu trình Calvin là đường G3P, từ đó tổng hợp carbohydrate (glucose, tinh bột, sucrose)."
+      },
+      {
+        id: "T3_MCQ_3",
+        topic: "topic3",
+        topicName: "Quang hợp ở Thực vật",
+        type: "mcq",
+        level: "Nhận biết",
+        prompt: "Câu 3. Năng lượng bắt buộc phải sử dụng cho pha sáng của quá trình quang hợp là:",
+        options: ["Năng lượng nhiệt", "Năng lượng ánh sáng", "Năng lượng gió", "Không cần năng lượng"],
+        answer: 1,
+        explanation: "Ánh sáng mặt trời kích hoạt electron ở diệp lục trung tâm để tạo dòng truyền điện tử tổng hợp ATP và NADPH."
+      },
+      {
+        id: "T3_MCQ_4",
+        topic: "topic3",
+        topicName: "Quang hợp ở Thực vật",
+        type: "mcq",
+        level: "Nhận biết",
+        prompt: "Câu 4. Loại khí được giải phóng ra từ quá trình quang hợp, có vai trò sống còn đối với sự hô hấp của sinh giới là:",
+        options: ["Khí oxy (O2)", "Khí hydro (H2)", "Khí carbonic (CO2)", "Khí nito (N2)"],
+        answer: 0,
+        explanation: "Khí Oxy (O2) sinh ra từ quá trình quang phân li nước ở thylakoid."
+      },
+      {
+        id: "T3_MCQ_5",
+        topic: "topic3",
+        topicName: "Quang hợp ở Thực vật",
+        type: "mcq",
+        level: "Vận dụng",
+        diagramType: "temperature_chart",
+        prompt: "Câu 5. Đồ thị sau đây biểu diễn mối liên quan giữa cường độ quang hợp ở một loài thực vật và nhiệt độ môi trường. Dựa vào đồ thị cho biết kết luận nào sau đây đúng?",
+        options: [
+          "Cường độ quang hợp ít phụ thuộc vào điều kiện nhiệt độ.",
+          "Cường độ quang hợp luôn tỉ lệ thuận với nhiệt độ môi trường.",
+          "Khi nhiệt độ tăng thì cường độ quang hợp luôn giảm.",
+          "Cường độ quang hợp tăng khi nhiệt độ tăng trong khoảng từ 10 đến 30°C."
+        ],
+        answer: 3,
+        explanation: "Từ đồ thị ta thấy: từ 10°C đến 30°C đường đồ thị đi lên (quang hợp tăng dần), đạt đỉnh quanh 30-35°C, sau đó suy giảm nhanh do enzyme quang hợp bị biến tính."
+      },
+      {
+        id: "T3_MCQ_6",
+        topic: "topic3",
+        topicName: "Quang hợp ở Thực vật",
+        type: "mcq",
+        level: "Nhận biết",
+        prompt: "Câu 6. Sắc tố phụ Carotenoid có hàm lượng dồi dào trong mẫu vật nào sau đây?",
+        options: ["Củ khoai mì", "Lá xà lách", "Lá xanh đậm", "Củ cà rốt"],
+        answer: 3,
+        explanation: "Củ cà rốt chứa hàm lượng beta-caroten rất cao tạo nên màu cam đặc trưng."
+      },
+      {
+        id: "T3_MCQ_7",
+        topic: "topic3",
+        topicName: "Quang hợp ở Thực vật",
+        type: "mcq",
+        level: "Nhận biết",
+        prompt: "Câu 7. Các sản phẩm được tạo ra từ pha sáng của quá trình quang hợp là:",
+        options: ["ATP, CO2", "ATP, NADPH, O2", "ATP, O2, H2O", "NADPH, H2O"],
+        answer: 1,
+        explanation: "Pha sáng phân li H2O tạo O2, đồng thời tích lũy hóa năng tạo ATP và lực khử NADPH cung cấp cho pha tối."
+      },
+      {
+        id: "T3_MCQ_8",
+        topic: "topic3",
+        topicName: "Quang hợp ở Thực vật",
+        type: "mcq",
+        level: "Thông hiểu",
+        prompt: "Câu 8. Khi nói về ảnh hưởng của các nhân tố môi trường đến quá trình quang hợp, phát biểu nào sau đây SAI?",
+        options: [
+          "Quang hợp bị giảm mạnh và có thể bị ngừng trệ khi cây bị thiếu nước.",
+          "CO2 ảnh hưởng đến quang hợp vì CO2 là nguyên liệu của pha tối.",
+          "Cường độ quang hợp luôn tỉ lệ thuận với cường độ ánh sáng.",
+          "Nhiệt độ ảnh hưởng đến quang hợp thông qua ảnh hưởng đến các phản ứng enzyme trong quang hợp."
+        ],
+        answer: 2,
+        explanation: "Phát biểu C Sai vì khi cường độ ánh sáng vượt quá điểm bão hòa ánh sáng thì cường độ quang hợp không tăng thêm mà giữ nguyên hoặc bị ức chế (quang ức chế)."
+      },
+      {
+        id: "T3_MCQ_9",
+        topic: "topic3",
+        topicName: "Quang hợp ở Thực vật",
+        type: "mcq",
+        level: "Nhận biết",
+        prompt: "Câu 9. Nhóm cây nào sau đây thuộc nhóm thực vật CAM (sống ở môi trường khô hạn)?",
+        options: [
+          "Dứa, xương rồng, thuốc bỏng.",
+          "Lúa, sắn, đậu tương.",
+          "Ngô, mía, cao lương.",
+          "Rau dền, cỏ lồng vực."
+        ],
+        answer: 0,
+        explanation: "Dứa, xương rồng, thanh long, thuốc bỏng là các loài cây mọng nước thích nghi khô hạn điển hình theo chu trình CAM."
+      },
+      {
+        id: "T3_MCQ_10",
+        topic: "topic3",
+        topicName: "Quang hợp ở Thực vật",
+        type: "mcq",
+        level: "Nhận biết",
+        prompt: "Câu 10. Pha sáng của quang hợp cung cấp cho pha tối các sản phẩm nào sau đây?",
+        options: ["H2O và O2", "CO2 và ATP", "Năng lượng ánh sáng", "ATP và NADPH"],
+        answer: 3,
+        explanation: "ATP và NADPH tạo ra ở thylakoid được chuyển vào chất nền stroma để phục vụ phản ứng khử axit photphoglixeric trong chu trình Calvin."
+      },
+      {
+        id: "T3_MCQ_11",
+        topic: "topic3",
+        topicName: "Quang hợp ở Thực vật",
+        type: "mcq",
+        level: "Vận dụng",
+        diagramType: "compensation_chart",
+        prompt: "Câu 11. Đồ thị ở hình bên mô tả ảnh hưởng của cường độ ánh sáng đến cường độ hô hấp và cường độ quang hợp của một loài thực vật. Điểm nào trên đồ thị biểu thị ĐIỂM BÙ ÁNH SÁNG của loài này?",
+        options: ["Điểm 1", "Điểm 2", "Điểm 3", "Điểm 4"],
+        answer: 3,
+        explanation: "Điểm bù ánh sáng là GIÁ TRỊ CƯỜNG ĐỘ ÁNH SÁNG (nằm trên trục hoành) mà tại đó cường độ quang hợp bằng cường độ hô hấp -> Ứng với điểm 4 trên trục hoành (Điểm 2 chỉ là giao điểm của 2 đường đồ thị)."
+      },
+      {
+        id: "T3_MCQ_12",
+        topic: "topic3",
+        topicName: "Quang hợp ở Thực vật",
+        type: "mcq",
+        level: "Thông hiểu",
+        prompt: "Câu 12. Khi nói về ảnh hưởng của quang phổ ánh sáng tới quang hợp, các tia sáng đơn sắc màu đỏ xúc tiến tổng hợp chất nào?",
+        options: ["Axit nucleic", "Protein", "Lipid", "Carbohydrate"],
+        answer: 3,
+        explanation: "Ánh sáng đỏ kích thích mạnh quá trình quang hợp tạo carbohydrate (đường, tinh bột); trong khi ánh sáng xanh tím kích thích tổng hợp axit amin, protein."
+      },
+      {
+        id: "T3_MCQ_13",
+        topic: "topic3",
+        topicName: "Quang hợp ở Thực vật",
+        type: "mcq",
+        level: "Vận dụng",
+        diagramType: "photosynthesis_two_phase",
+        prompt: "Câu 13. Nghiên cứu sơ đồ về mối quan hệ giữa hai pha của quá trình quang hợp ở thực vật. Kết luận nào sau đây là đúng?",
+        options: [
+          "Chất B là CO2",
+          "Chất C là O2",
+          "Chất A là H2O",
+          "Pha 1 xảy ra ở chất nền lục lạp."
+        ],
+        answer: 2,
+        explanation: "Trong sơ đồ: Pha 1 là Pha Sáng (ở màng thylakoid) nhận Ánh sáng và Chất A là H2O -> thải ra Chất B là O2. Pha 2 là Pha Tối nhận CO2 (Chất C) tạo Carbohydrate. Vậy Chất A chính là H2O."
+      },
+      {
+        id: "T3_MCQ_14",
+        topic: "topic3",
+        topicName: "Quang hợp ở Thực vật",
+        type: "mcq",
+        level: "Thông hiểu",
+        prompt: "Câu 14. Có bao nhiêu đặc điểm hình thái, giải phẫu của lá sau đây thích nghi với chức năng quang hợp?\n(I) Diện tích bề mặt lớn giúp hấp thụ được nhiều tia sáng.\n(II) Trong lớp biểu bì của mặt lá có khí khổng giúp cho CO2 khuếch tán vào bên trong.\n(III) Trong lá có các tế bào chứa bào quan quang hợp là lục lạp.\n(IV) Trên màng tilacoit của lục lạp có các sắc tố quang hợp hấp thụ ánh sáng.",
+        options: ["1", "2", "3", "4"],
+        answer: 3,
+        explanation: "Cả 4 đặc điểm đều thích nghi hoàn hảo với việc hấp thụ ánh sáng, thu nhận khí CO2 và tiến hành phản ứng quang hợp."
+      },
+      {
+        id: "T3_MCQ_15",
+        topic: "topic3",
+        topicName: "Quang hợp ở Thực vật",
+        type: "mcq",
+        level: "Nhận biết",
+        prompt: "Câu 15. Ở thực vật, pha tối (pha đồng hóa CO2) của quá trình quang hợp diễn ra tại vị trí nào trong lục lạp?",
+        options: [
+          "chất nền của ti thể.",
+          "màng tilacoit của lục lạp.",
+          "chất nền (stroma) của lục lạp.",
+          "màng trong của ti thể."
+        ],
+        answer: 2,
+        explanation: "Pha tối diễn ra trong chất nền (stroma) của lục lạp nhờ hệ thống enzyme xúc tác hòa tan."
+      },
+      {
+        id: "T3_MCQ_16",
+        topic: "topic3",
+        topicName: "Quang hợp ở Thực vật",
+        type: "mcq",
+        level: "Thông hiểu",
+        prompt: "Câu 16. Khi nói về quá trình quang hợp ở thực vật, phát biểu nào sau đây SAI?",
+        options: [
+          "Pha tối của quang hợp tạo ra NADP+ và ADP để cung cấp lại cho pha sáng.",
+          "Nếu không xảy ra quang phân li nước thì APG không được chuyển thành AlPG.",
+          "O2 được sinh ra trong quang hợp có nguồn gốc từ cả H2O và CO2.",
+          "Cả thực vật C3, C4 và thực vật CAM đều có chu trình Calvin."
+        ],
+        answer: 2,
+        explanation: "Phát biểu C Sai vì toàn bộ O2 giải phóng ra ngoài trong quang hợp chỉ có nguồn gốc duy nhất từ quá trình quang phân li H2O."
+      },
+      {
+        id: "T3_MCQ_17",
+        topic: "topic3",
+        topicName: "Quang hợp ở Thực vật",
+        type: "mcq",
+        level: "Nhận biết",
+        prompt: "Câu 17. Khẳng định nào dưới đây về các sản phẩm của quá trình quang hợp là đúng?",
+        options: [
+          "Pha sáng tạo ra ATP, NADPH và O2.",
+          "Pha tối bắt buộc cần có sự tham gia trực tiếp của nước.",
+          "Pha sáng tạo ra ADP cung cấp cho pha tối.",
+          "Pha tối trực tiếp tạo ra NADPH."
+        ],
+        answer: 0,
+        explanation: "Pha sáng dùng năng lượng ánh sáng để quang phân li nước và phosphoryl hóa tạo ATP, NADPH, O2."
+      },
+      {
+        id: "T3_MCQ_18",
+        topic: "topic3",
+        topicName: "Quang hợp ở Thực vật",
+        type: "mcq",
+        level: "Nhận biết",
+        prompt: "Câu 18. Quá trình quang hợp chuyển hoá năng lượng ánh sáng thành dạng năng lượng nào?",
+        options: [
+          "Năng lượng cơ học.",
+          "Năng lượng hoá học tích lũy trong chất hữu cơ.",
+          "Không sử dụng năng lượng ánh sáng.",
+          "Năng lượng hạt nhân."
+        ],
+        answer: 1,
+        explanation: "Bản chất năng lượng của quang hợp là biến quang năng thành hóa năng."
+      },
+      {
+        id: "T3_MCQ_19",
+        topic: "topic3",
+        topicName: "Quang hợp ở Thực vật",
+        type: "mcq",
+        level: "Nhận biết",
+        prompt: "Câu 19. Quá trình quang hợp ở thực vật diễn ra chủ yếu ở cơ quan nào?",
+        options: ["lá cây.", "rễ cây.", "thân cây gỗ.", "quả."],
+        answer: 0,
+        explanation: "Lá cây là cơ quan chuyên hóa cao nhất cho chức năng quang hợp."
+      },
+      {
+        id: "T3_MCQ_20",
+        topic: "topic3",
+        topicName: "Quang hợp ở Thực vật",
+        type: "mcq",
+        level: "Thông hiểu",
+        prompt: "Câu 20. Pha sáng của quang hợp đóng vai trò chính là gì?",
+        options: [
+          "cố định trực tiếp CO2 khí quyển.",
+          "tạo ra sản phẩm carbohydrate dự trữ.",
+          "là quá trình hô hấp hiếu khí.",
+          "hấp thụ và biến đổi năng lượng ánh sáng thành ATP và NADPH."
+        ],
+        answer: 3,
+        explanation: "Vai trò cơ bản của pha sáng là chuyển hóa quang năng thành hóa năng tích trữ trong ATP và NADPH."
+      },
+      {
+        id: "T3_MCQ_21",
+        topic: "topic3",
+        topicName: "Quang hợp ở Thực vật",
+        type: "mcq",
+        level: "Nhận biết",
+        prompt: "Câu 21. Nguyên liệu tham gia vào quá trình quang hợp ở cây xanh gồm:",
+        options: [
+          "Khí cacbonic, nước và năng lượng ánh sáng.",
+          "Khí cacbonic và năng lượng ánh sáng.",
+          "Khí oxy, nước và năng lượng ánh sáng.",
+          "Khí oxy và năng lượng ánh sáng."
+        ],
+        answer: 0,
+        explanation: "Phương trình tổng quát: 6CO2 + 12H2O + Ánh sáng -> C6H12O6 + 6O2 + 6H2O."
+      },
+      {
+        id: "T3_MCQ_22",
+        topic: "topic3",
+        topicName: "Quang hợp ở Thực vật",
+        type: "mcq",
+        level: "Nhận biết",
+        prompt: "Câu 22. Quá trình quang phân ly nước trong pha sáng tạo ra sản phẩm khí nào?",
+        options: ["khí carbonic", "khí hydro", "khí nito", "khí oxy"],
+        answer: 3,
+        explanation: "2H2O -> 4H+ + 4e- + O2. O2 được khuếch tán ra môi trường."
+      },
+      {
+        id: "T3_MCQ_23",
+        topic: "topic3",
+        topicName: "Quang hợp ở Thực vật",
+        type: "mcq",
+        level: "Nhận biết",
+        prompt: "Câu 23. Trong cấu trúc lục lạp, pha sáng quang hợp diễn ra tại:",
+        options: ["chất nền stroma.", "màng trong lục lạp.", "màng ngoài lục lạp.", "màng thylakoid."],
+        answer: 3,
+        explanation: "Các phức hệ quang hệ (PSI, PSII) và chuỗi truyền electron gắn cố định trên màng thylakoid."
+      },
+      {
+        id: "T3_MCQ_24",
+        topic: "topic3",
+        topicName: "Quang hợp ở Thực vật",
+        type: "mcq",
+        level: "Nhận biết",
+        prompt: "Câu 24. Nhóm thực vật C3 cố định CO2 theo chu trình nào?",
+        options: ["Chu trình PEP", "Chu trình Calvin", "Con đường C4 riêng biệt", "Chuỗi truyền electron"],
+        answer: 1,
+        explanation: "Thực vật C3 chỉ có duy nhất chu trình Calvin với chất nhận đầu tiên là Ribulose-1,5-bisphosphate (RuBP)."
+      },
+      {
+        id: "T3_MCQ_25",
+        topic: "topic3",
+        topicName: "Quang hợp ở Thực vật",
+        type: "mcq",
+        level: "Nhận biết",
+        prompt: "Câu 25. Nhóm thực vật C3 được phân bố:",
+        options: [
+          "hầu khắp mọi nơi trên Trái Đất (ôn đới, cận nhiệt, nhiệt đới).",
+          "chỉ ở vùng hàn đới giá lạnh.",
+          "chỉ ở vùng nhiệt đới khô hạn.",
+          "chỉ ở vùng sa mạc cằn cỗi."
+        ],
+        answer: 0,
+        explanation: "Thực vật C3 chiếm đa số trong giới thực vật và phân bố rộng khắp trên địa cầu."
+      },
+      {
+        id: "T3_MCQ_26",
+        topic: "topic3",
+        topicName: "Quang hợp ở Thực vật",
+        type: "mcq",
+        level: "Nhận biết",
+        prompt: "Câu 26. Nhóm thực vật C4 phân bố chủ yếu ở điều kiện khí hậu nào?",
+        options: [
+          "rộng rãi trên Trái Đất, chủ yếu ở vùng ôn đới mát mẻ.",
+          "ở vùng ôn đới lạnh và á nhiệt đới ẩm.",
+          "ở vùng nhiệt đới và cận nhiệt đới nắng nóng, cường độ sáng mạnh.",
+          "ở vùng đài nguyên Bắc cực."
+        ],
+        answer: 2,
+        explanation: "Thực vật C4 (mía, ngô, cao lương...) thích nghi môi trường nhiệt đới nóng ẩm, ánh sáng gay gắt."
+      },
+      {
+        id: "T3_MCQ_27",
+        topic: "topic3",
+        topicName: "Quang hợp ở Thực vật",
+        type: "mcq",
+        level: "Nhận biết",
+        prompt: "Câu 27. Những cây nào sau đây thuộc nhóm thực vật CAM?",
+        options: [
+          "lúa, khoai, sắn, đậu.",
+          "ngô, mía, cỏ lồng vực, cỏ gấu.",
+          "dứa, xương rồng, thuốc bỏng.",
+          "đậu nành, lúa mì, táo."
+        ],
+        answer: 2,
+        explanation: "Dứa, xương rồng, thuốc bỏng quang hợp theo con đường CAM thích nghi khô hạn."
+      },
+      {
+        id: "T3_MCQ_28",
+        topic: "topic3",
+        topicName: "Quang hợp ở Thực vật",
+        type: "mcq",
+        level: "Nhận biết",
+        prompt: "Câu 28. Những cây nào dưới đây thuộc nhóm thực vật C3?",
+        options: [
+          "rau dền, ngô, kê.",
+          "mía, ngô, cỏ lồng vực, cỏ gấu.",
+          "dứa, xương rồng, thuốc bỏng.",
+          "lúa, khoai, sắn, đậu tương."
+        ],
+        answer: 3,
+        explanation: "Lúa, khoai, sắn, đậu, cam, chanh... là cây C3 điển hình."
+      },
+      {
+        id: "T3_MCQ_29",
+        topic: "topic3",
+        topicName: "Quang hợp ở Thực vật",
+        type: "mcq",
+        level: "Thông hiểu",
+        prompt: "Câu 29. Sản phẩm cố định CO2 đầu tiên của con đường quang hợp C4 là chất gì?",
+        options: [
+          "APG (axit photphoglixeric - hợp chất 3C).",
+          "AlPG (alđehit photphoglixeric).",
+          "AM (axit malic).",
+          "Axit oxaloaxetic (AOA - hợp chất có 4 nguyên tử carbon)."
+        ],
+        answer: 3,
+        explanation: "Chất nhận PEP kết hợp với CO2 tạo ra hợp chất 4 carbon đầu tiên là Oxaloacetate (AOA), sau đó chuyển thành Malate."
+      },
+      {
+        id: "T3_MCQ_30",
+        topic: "topic3",
+        topicName: "Quang hợp ở Thực vật",
+        type: "mcq",
+        level: "Thông hiểu",
+        prompt: "Câu 30. Ở thực vật CAM, đặc điểm hoạt động của khí khổng có gì đặc biệt?",
+        options: [
+          "đóng vào ban ngày và mở vào ban đêm.",
+          "chỉ mở ra khi hoàng hôn.",
+          "chỉ đóng vào giữa trưa.",
+          "đóng vào ban đêm và mở vào ban ngày."
+        ],
+        answer: 0,
+        explanation: "Thực vật CAM mở khí khổng ban đêm để lấy CO2 (tránh thoát hơi nước khi trời nắng gắt) và đóng chặt vào ban ngày."
+      },
+      {
+        id: "T3_MCQ_31",
+        topic: "topic3",
+        topicName: "Quang hợp ở Thực vật",
+        type: "mcq",
+        level: "Nhận biết",
+        prompt: "Câu 31. Điểm bù ánh sáng là cường độ ánh sáng mà tại đó cường độ quang hợp:",
+        options: [
+          "lớn hơn cường độ hô hấp.",
+          "cân bằng (bằng) với cường độ hô hấp.",
+          "nhỏ hơn cường độ hô hấp.",
+          "lớn gấp 2 lần cường độ hô hấp."
+        ],
+        answer: 1,
+        explanation: "Tại điểm bù ánh sáng, lượng CO2 hấp thụ qua quang hợp bằng đúng lượng CO2 giải phóng qua hô hấp."
+      },
+      {
+        id: "T3_MCQ_32",
+        topic: "topic3",
+        topicName: "Quang hợp ở Thực vật",
+        type: "mcq",
+        level: "Nhận biết",
+        prompt: "Câu 32. Điểm bão hòa ánh sáng là cường độ ánh sáng tối thiểu để cường độ quang hợp đạt đến mức:",
+        options: [
+          "cực đại (tối đa).",
+          "cực tiểu.",
+          "mức trung bình.",
+          "trên mức trung bình một chút."
+        ],
+        answer: 0,
+        explanation: "Điểm bão hòa ánh sáng là ngưỡng cường độ sáng mà nếu tiếp tục tăng cường độ sáng thì quang hợp cũng không tăng thêm (đã đạt cực đại)."
+      },
+
+      // PHẦN II: CÂU HỎI ĐÚNG SAI QUANG HỢP (5 CÂU)
+      {
+        id: "T3_TF_1",
+        topic: "topic3",
+        topicName: "Quang hợp ở Thực vật",
+        type: "tf",
+        level: "Thông hiểu",
+        prompt: "Câu 1. Mỗi nhận định sau là đúng hay sai khi nói về pha sáng của quang hợp ở thực vật?",
+        items: [
+          { text: "a. Nguyên liệu của pha sáng gồm carbohydrate và O2.", ans: false },
+          { text: "b. Sản phẩm của pha sáng gồm ATP, NADPH và O2.", ans: true },
+          { text: "c. Trong pha sáng, nguyên liệu được lấy từ môi trường là khí O2.", ans: false },
+          { text: "d. Sản phẩm của pha sáng không tham gia vào pha tối là O2.", ans: true }
+        ],
+        explanation: "a Sai (nguyên liệu là H2O, ADP, NADP+); b Đúng; c Sai (nguyên liệu từ môi trường là H2O); d Đúng (O2 khuếch tán ra khí quyển)."
+      },
+      {
+        id: "T3_TF_2",
+        topic: "topic3",
+        topicName: "Quang hợp ở Thực vật",
+        type: "tf",
+        level: "Thông hiểu",
+        prompt: "Câu 2. Khi nói đến các pha của quá trình quang hợp, mỗi kết luận sau là đúng hay sai?",
+        items: [
+          { text: "a. Nguyên liệu pha sáng là ATP, NADPH, O2.", ans: false },
+          { text: "b. Sản phẩm pha sáng là năng lượng ánh sáng, H2O, ADP, NADP+.", ans: false },
+          { text: "c. Nguyên liệu của chu trình Calvin là ATP, NADPH và CO2.", ans: true },
+          { text: "d. Sản phẩm của chu trình Calvin là các hợp chất hữu cơ (triose phosphate).", ans: true }
+        ],
+        explanation: "a và b Sai vì nhầm lẫn giữa sản phẩm và nguyên liệu; c và d Đúng chuẩn lý thuyết chu trình Calvin."
+      },
+      {
+        id: "T3_TF_3",
+        topic: "topic3",
+        topicName: "Quang hợp ở Thực vật",
+        type: "tf",
+        level: "Vận dụng",
+        prompt: "Câu 3. Mỗi nhận định sau là đúng hay sai khi nói về hệ sắc tố và sự hấp thụ năng lượng quang hợp?",
+        items: [
+          { text: "a. Bản chất của quá trình quang hợp là chuyển quang năng thành nhiệt năng.", ans: false },
+          { text: "b. Carotenoid hấp thụ ánh sáng ở vùng vàng cam, truyền năng lượng ánh sáng cho diệp lục.", ans: false },
+          { text: "c. Chlorophyll (diệp lục) hấp thụ ánh sáng mạnh nhất ở vùng xanh tím và vùng đỏ.", ans: true },
+          { text: "d. Năng lượng được truyền từ carotenoid → chlorophyll a → chlorophyll b → chlorophyll b trung tâm phản ứng.", ans: false }
+        ],
+        explanation: "a Sai (chuyển quang năng thành hóa năng); b Sai (Carotenoid hấp thụ xanh tím và xanh lục); d Sai (sơ đồ truyền đúng: Carotenoid -> Chlorophyll b -> Chlorophyll a -> Chlorophyll a trung tâm phản ứng)."
+      },
+      {
+        id: "T3_TF_4",
+        topic: "topic3",
+        topicName: "Quang hợp ở Thực vật",
+        type: "tf",
+        level: "Thông hiểu",
+        prompt: "Câu 4. Mỗi nhận định sau là đúng hay sai khi nói về pha tối của quang hợp ở các nhóm thực vật?",
+        items: [
+          { text: "a. Pha tối diễn ra ở màng thylakoid.", ans: false },
+          { text: "b. Pha tối hoàn toàn không sử dụng nguyên liệu sản phẩm của pha sáng.", ans: false },
+          { text: "c. Pha tối sử dụng sản phẩm của pha sáng (ATP, NADPH) để đồng hóa CO2.", ans: true },
+          { text: "d. Pha tối ở các nhóm thực vật C3, C4 và CAM đều có chu trình Calvin.", ans: true }
+        ],
+        explanation: "a Sai (diễn ra ở chất nền stroma); b Sai; c và d Đúng (cả C3, C4, CAM đều kết thúc cố định cacbon bằng chu trình Calvin)."
+      },
+      {
+        id: "T3_TF_5",
+        topic: "topic3",
+        topicName: "Quang hợp ở Thực vật",
+        type: "tf",
+        level: "Thông hiểu",
+        prompt: "Câu 5. Mỗi nhận định sau là đúng hay sai khi xem xét các giai đoạn của quá trình quang hợp?",
+        items: [
+          { text: "a. Nguyên liệu của pha sáng gồm carbohydrate và O2.", ans: false },
+          { text: "b. Sản phẩm của pha sáng gồm ATP, NADPH và O2.", ans: true },
+          { text: "c. Trong pha sáng, nguyên liệu được lấy trực tiếp từ môi trường là O2.", ans: false },
+          { text: "d. Sản phẩm của pha sáng không tham gia vào pha tối là O2.", ans: true }
+        ],
+        explanation: "Tương tự câu 1: a và c Sai; b và d Đúng."
+      },
+
+      // PHẦN III: CÂU HỎI TRẢ LỜI NGẮN QUANG HỢP (10 CÂU)
+      {
+        id: "T3_SHORT_1",
+        topic: "topic3",
+        topicName: "Quang hợp ở Thực vật",
+        type: "short",
+        level: "Nhận biết",
+        prompt: "Câu 1. Trong số các cơ quan sau đây ở thực vật trên cạn: Lá, Thân, Rễ, Hoa, Quả, Hạt, có bao nhiêu cơ quan xảy ra quang hợp chủ yếu?",
+        answer: "1",
+        explanation: "Đáp án: 1 (Chính là Lá cây)."
+      },
+      {
+        id: "T3_SHORT_2",
+        topic: "topic3",
+        topicName: "Quang hợp ở Thực vật",
+        type: "short",
+        level: "Nhận biết",
+        prompt: "Câu 2. Trong số các thực vật sau: dứa, xương rồng, thuốc bỏng, lúa, khoai, sắn, đậu. Có bao nhiêu cây thuộc nhóm thực vật CAM?",
+        answer: "3",
+        explanation: "Đáp án: 3 loài cây (Gồm: dứa, xương rồng, thuốc bỏng)."
+      },
+      {
+        id: "T3_SHORT_3",
+        topic: "topic3",
+        topicName: "Quang hợp ở Thực vật",
+        type: "short",
+        level: "Nhận biết",
+        prompt: "Câu 3. Trong số các thực vật sau: dứa, xương rồng, thuốc bỏng, lúa, khoai, sắn, đậu. Có bao nhiêu cây thuộc nhóm thực vật C3?",
+        answer: "4",
+        explanation: "Đáp án: 4 loài cây (Gồm: lúa, khoai, sắn, đậu; nếu tính theo bộ 3 nhóm nông sản truyền thống đáp án là 3 hoặc 4)."
+      },
+      {
+        id: "T3_SHORT_4",
+        topic: "topic3",
+        topicName: "Quang hợp ở Thực vật",
+        type: "short",
+        level: "Nhận biết",
+        prompt: "Câu 4. Trong số các vị trí sau đây trong lục lạp: xoang thylakoid, màng thylakoid, chất nền lục lạp, màng trong lục lạp. Có bao nhiêu vị trí có sự phân bố của hệ sắc tố quang hợp?",
+        answer: "1",
+        explanation: "Đáp án: 1 vị trí (Hệ sắc tố định vị độc quyền trên Màng Thylakoid)."
+      },
+      {
+        id: "T3_SHORT_5",
+        topic: "topic3",
+        topicName: "Quang hợp ở Thực vật",
+        type: "short",
+        level: "Thông hiểu",
+        prompt: "Câu 5. Trong các vai trò sau: (1) hấp thụ và chuyển hóa năng lượng ánh sáng; (2) hấp thụ và phân giải năng lượng ánh sáng; (3) phân giải năng lượng ánh sáng để tạo ATP; (4) hấp thụ và truyền năng lượng trực tiếp cho CO2. Có bao nhiêu vai trò chính xác của hệ sắc tố quang hợp?",
+        answer: "1",
+        explanation: "Đáp án: 1 vai trò (Đó là: Hấp thụ và chuyển hóa năng lượng ánh sáng)."
+      },
+      {
+        id: "T3_SHORT_6",
+        topic: "topic3",
+        topicName: "Quang hợp ở Thực vật",
+        type: "short",
+        level: "Nhận biết",
+        prompt: "Câu 6. Trong số các sắc tố sau đây: xanthophyll, Diệp lục (Chlorophyll), phycobilin, carotenoid. Có bao nhiêu nhóm sắc tố đóng vai trò là sắc tố quang hợp CHÍNH ở thực vật?",
+        answer: "1",
+        explanation: "Đáp án: 1 (Chính là Diệp lục / Chlorophyll; carotenoid, xanthophyll là sắc tố phụ)."
+      },
+      {
+        id: "T3_SHORT_7",
+        topic: "topic3",
+        topicName: "Quang hợp ở Thực vật",
+        type: "short",
+        level: "Nhận biết",
+        prompt: "Câu 7. Trong số các chất sau: xanthophyll, Diệp lục (Chlorophyll), phycobilin, carotenoid, Gibberellin. Có bao nhiêu chất KHÔNG phải là sắc tố quang hợp?",
+        answer: "1",
+        explanation: "Đáp án: 1 chất (Đó là Gibberellin - một loại hormone sinh trưởng ở thực vật)."
+      },
+      {
+        id: "T3_SHORT_8",
+        topic: "topic3",
+        topicName: "Quang hợp ở Thực vật",
+        type: "short",
+        level: "Thông hiểu",
+        prompt: "Câu 8. Trong số các sắc tố sau: chlorophyll b, chlorophyll a, carotenoid, xanthophyll. Có bao nhiêu sắc tố làm nhiệm vụ TRỰC TIẾP biến đổi năng lượng quang năng thành hóa năng trong ATP và NADPH?",
+        answer: "1",
+        explanation: "Đáp án: 1 sắc tố duy nhất (Chính là Chlorophyll a ở trung tâm phản ứng P680 và P700)."
+      },
+      {
+        id: "T3_SHORT_9",
+        topic: "topic3",
+        topicName: "Quang hợp ở Thực vật",
+        type: "short",
+        level: "Vận dụng",
+        prompt: "Câu 9. Có bao nhiêu phát biểu đúng trong các phát biểu sau về các biện pháp kĩ thuật nâng cao năng suất cây trồng dựa trên cơ sở quang hợp?\n(1) Cải tạo tiềm năng giống cây trồng quang hợp hiệu quả.\n(2) Tăng diện tích canh tác.\n(3) Tăng diện tích và chỉ số diện tích lá tối ưu.\n(4) Sử dụng hiệu quả nguồn sáng và phân bố phổ ánh sáng.\n(5) Tăng cường quá trình hô hấp hiếu khí ban đêm.\n(6) Tăng cường thời gian chiếu sáng và nguồn sáng.",
+        answer: "4",
+        explanation: "Đáp án: 4 biện pháp kĩ thuật đúng (Gồm: 1, 3, 4, 6. Ý 5 sai vì tăng hô hấp sẽ làm tiêu hao chất hữu cơ dự trữ, làm giảm năng suất kinh tế)."
+      },
+      {
+        id: "T3_SHORT_10",
+        topic: "topic3",
+        topicName: "Quang hợp ở Thực vật",
+        type: "short",
+        level: "Thông hiểu",
+        prompt: "Câu 10. Những hoạt động nào sau đây xảy ra trong pha cố định CO2 (Pha tối)?\n(1) Giải phóng khí oxi.\n(2) Biến đổi khí CO2 hấp thụ từ khí quyển thành carbohydrate.\n(3) Giải phóng electron từ quang phân li nước.\n(4) Tổng hợp phân tử ATP từ ADP và Pi.\n(5) Tái sinh chất nhận CO2 và sinh ra phân tử nước mới.\nCó bao nhiêu hoạt động?",
+        answer: "2",
+        explanation: "Đáp án: 2 hoạt động diễn ra trong pha tối (Gồm ý 2 và ý 5. Các ý 1, 3, 4 thuộc pha sáng)."
+      },
+
+      // PHẦN IV: CÂU HỎI TỰ LUẬN CÓ GỢI Ý DÀN Ý (3 CÂU)
+      {
+        id: "T3_ESSAY_1",
+        topic: "topic2",
+        topicName: "Nước & Khoáng ở TV",
+        type: "essay",
+        level: "Vận dụng cao",
+        prompt: "CÂU 1 (TỰ LUẬN): Trình bày vai trò của nước đối với thực vật? Phân tích vai trò và ý nghĩa sinh học của quá trình thoát hơi nước ở lá?",
+        outline: [
+          {
+            title: "1. Vai trò của nước đối với thực vật:",
+            points: [
+              "Thành phần cấu trúc: Chiếm 70 - 90% khối lượng tươi của mô, duy trì hình dạng, sức trương tế bào và độ bền cơ học của cây thân thảo.",
+              "Dung môi hòa tan: Là môi trường hòa tan, vận chuyển các ion khoáng và chất hữu cơ trong dòng mạch rây và mạch gỗ.",
+              "Môi trường và chất phản ứng: Trực tiếp tham gia các phản ứng thủy phân, phản ứng quang phân ly nước trong pha sáng quang hợp.",
+              "Điều hòa nhiệt độ: Nhiệt dung riêng của nước cao giúp cây hạ nhiệt bề mặt lá khi gặp nắng nóng gay gắt."
+            ]
+          },
+          {
+            title: "2. Vai trò của quá trình thoát hơi nước ở lá:",
+            points: [
+              "Động lực hút đầu trên: Tạo sức hút nước và ion khoáng từ rễ lên thân và lá một cách liên tục và hiệu quả.",
+              "Hạ nhiệt bề mặt lá: Khi 1g nước bay hơi làm tiêu tán khoảng 2,4 kJ nhiệt lượng, chống cháy lá trong mùa hè.",
+              "Mở đường cho trao đổi khí: Khi khí khổng mở để thoát hơi nước, khí CO2 đồng thời khuếch tán vào bên trong nhu mô lá cung cấp nguyên liệu thiết yếu cho quá trình quang hợp."
+            ]
+          }
+        ]
+      },
+      {
+        id: "T3_ESSAY_2",
+        topic: "topic3",
+        topicName: "Quang hợp ở Thực vật",
+        type: "essay",
+        level: "Vận dụng cao",
+        prompt: "CÂU 2 (TỰ LUẬN): So sánh sự giống nhau và khác nhau trong con đường đồng hóa CO2 ở 3 nhóm thực vật C3, C4 và CAM?",
+        outline: [
+          {
+            title: "1. Điểm giống nhau giữa 3 nhóm thực vật:",
+            points: [
+              "Đều có chu trình Calvin (C3) để tổng hợp ra đường và các hợp chất hữu cơ (triose phosphate).",
+              "Pha sáng đều diễn ra tương tự nhau tại thylakoid, tạo ATP và NADPH từ năng lượng ánh sáng và quang phân li nước."
+            ]
+          },
+          {
+            title: "2. Bảng phân tích sự khác nhau chi tiết:",
+            points: [
+              "Chất nhận CO2 đầu tiên: C3 là RuBP (5C); C4 và CAM là PEP (3C).",
+              "Sản phẩm cố định CO2 đầu tiên: C3 là APG (3C); C4 và CAM là AOA (4C) / Malate.",
+              "Không gian diễn ra: C3 chỉ diễn ra ở tế bào nhu mô lá; C4 diễn ra ở 2 loại tế bào (nhu mô lá và bao bó mạch); CAM chỉ diễn ra ở tế bào nhu mô lá.",
+              "Thời gian diễn ra: C3 và C4 cố định CO2 ban ngày; CAM cố định CO2 ban đêm (giai đoạn sơ bộ) và chu trình Calvin ban ngày.",
+              "Hô hấp sáng: C3 có hô hấp sáng gây lãng phí năng lượng; C4 và CAM không có (hoặc rất mờ nhạt).",
+              "Điểm bù CO2 và nhu cầu nước: C3 có điểm bù CO2 cao (30-70 ppm), nhu cầu nước cao; C4 và CAM có điểm bù CO2 rất thấp (0-10 ppm), chịu hạn tốt, tiết kiệm nước vượt trội."
+            ]
+          }
+        ]
+      },
+      {
+        id: "T3_ESSAY_3",
+        topic: "topic3",
+        topicName: "Quang hợp ở Thực vật",
+        type: "essay",
+        level: "Vận dụng cao",
+        prompt: "CÂU 3 (TỰ LUẬN): Vận dụng kiến thức Bài 2 (Trao đổi nước và khoáng) và Bài 4 (Quang hợp) để giải thích các hiện tượng thực tiễn trong nông nghiệp và đời sống?",
+        outline: [
+          {
+            title: "1. Hiện tượng bón quá nhiều phân làm cây bị héo lá và chết rễ:",
+            points: [
+              "Giải thích: Nồng độ ion khoáng trong dung dịch đất tăng quá cao làm tăng áp suất thẩm thấu của đất lớn hơn áp suất thẩm thấu dịch tế bào lông hút.",
+              "Hậu quả: Nước bị rút ngược từ trong tế bào lông hút ra ngoài môi trường đất -> cây mất nước sinh lý, héo và chết ngạt."
+            ]
+          },
+          {
+            title: "2. Hiện tượng rét hại làm mạ non chết và cách chống rét cho lúa:",
+            points: [
+              "Giải thích: Nhiệt độ thấp (dưới 13°C) làm màng tế bào rễ giảm độ nhớt và tính linh động, giảm trao đổi chất, lông hút bị rụng hoặc tê liệt.",
+              "Biện pháp: Giữ mực nước chân ấm trong ruộng mạ, che phủ nilon trong suốt chắn gió lạnh, bón thêm tro bếp và phân lân để tăng cường khả năng chịu rét của bộ rễ."
+            ]
+          },
+          {
+            title: "3. Ứng dụng điều hòa quang hợp tăng năng suất trong nhà màng, nhà kính:",
+            points: [
+              "Điều khiển ánh sáng: Sử dụng đèn LED quang phổ chuyên dụng (đỏ và xanh lam) để bổ sung thời gian chiếu sáng vào ban đêm.",
+              "Tăng nồng độ CO2: Bổ sung khí CO2 trong nhà kính từ 0,04% lên khoảng 0,1% giúp nâng cao cường độ quang hợp từ 20 - 40% mà không gây độc hại.",
+              "Tưới nhỏ giọt kết hợp dinh dưỡng (Fertigation): Cung cấp nước và khoáng đúng thời điểm sinh trưởng của cây."
+            ]
+          }
+        ]
+      }
+    ];
+
+    // ================= TRẠNG THÁI ỨNG DỤNG (APP STATE) =================
+    let state = {
+      mode: 'study', // 'study' | 'exam'
+      currentQuestionIndex: 0,
+      userAnswers: {}, // { [questionId]: answerValue }
+      filteredQuestionIndices: [],
+      bookmarks: [],
+      examTimerSeconds: 45 * 60,
+      timerInterval: null,
+      examSubmitted: false,
+      soundEnabled: true,
+      darkMode: false
+    };
+
+    // ================= BỘ TẠO ÂM THANH TINH TẾ (WEB AUDIO API) =================
+    const audioContext = window.AudioContext ? new (window.AudioContext || window.webkitAudioContext)() : null;
+    function playBeep(type) {
+      if (!state.soundEnabled || !audioContext) return;
+      try {
+        if (audioContext.state === 'suspended') audioContext.resume();
+        const osc = audioContext.createOscillator();
+        const gain = audioContext.createGain();
+        osc.connect(gain);
+        gain.connect(audioContext.destination);
+
+        const now = audioContext.currentTime;
+        if (type === 'click') {
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(440, now);
+          osc.frequency.exponentialRampToValueAtTime(220, now + 0.05);
+          gain.gain.setValueAtTime(0.05, now);
+          gain.gain.linearRampToValueAtTime(0, now + 0.05);
+          osc.start(now);
+          osc.stop(now + 0.05);
+        } else if (type === 'correct') {
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(523.25, now); // C5
+          osc.frequency.setValueAtTime(659.25, now + 0.08); // E5
+          gain.gain.setValueAtTime(0.1, now);
+          gain.gain.linearRampToValueAtTime(0, now + 0.25);
+          osc.start(now);
+          osc.stop(now + 0.25);
+        } else if (type === 'wrong') {
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(220, now);
+          osc.frequency.setValueAtTime(164.81, now + 0.1);
+          gain.gain.setValueAtTime(0.08, now);
+          gain.gain.linearRampToValueAtTime(0, now + 0.2);
+          osc.start(now);
+          osc.stop(now + 0.2);
+        }
+      } catch (e) {
+        console.warn('Audio feedback error', e);
+      }
+    }
+
+    // ================= LOCAL STORAGE HELPERS =================
+    function saveStateToStorage() {
+      try {
+        const payload = {
+          userAnswers: state.userAnswers,
+          mode: state.mode,
+          bookmarks: state.bookmarks,
+          darkMode: state.darkMode,
+          soundEnabled: state.soundEnabled
+        };
+        localStorage.setItem('bio11_quiz_state', JSON.stringify(payload));
+      } catch (e) {
+        console.warn('Local storage save failed', e);
+      }
+    }
+
+    function loadStateFromStorage() {
+      try {
+        const saved = localStorage.getItem('bio11_quiz_state');
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          if (parsed.userAnswers) state.userAnswers = parsed.userAnswers;
+          if (parsed.mode) state.mode = parsed.mode;
+          if (parsed.bookmarks) state.bookmarks = parsed.bookmarks;
+          if (typeof parsed.soundEnabled === 'boolean') state.soundEnabled = parsed.soundEnabled;
+          if (typeof parsed.darkMode === 'boolean') state.darkMode = parsed.darkMode;
+        }
+      } catch (e) {
+        console.warn('Local storage load failed', e);
+      }
+    }
+
+    // ================= KHỞI TẠO VÀ LỌC DANH SÁCH CÂU HỎI =================
+    function applyFilters() {
+      const topicVal = document.getElementById('topicFilter').value;
+      const typeVal = document.getElementById('typeFilter').value;
+
+      state.filteredQuestionIndices = [];
+      quizData.forEach((q, idx) => {
+        const matchTopic = (topicVal === 'all') || (q.topic === topicVal);
+        const matchType = (typeVal === 'all') || (q.type === typeVal);
+        if (matchTopic && matchType) {
+          state.filteredQuestionIndices.push(idx);
+        }
+      });
+
+      // Nếu câu hỏi hiện tại không nằm trong danh sách lọc, chuyển về câu đầu tiên thỏa mãn
+      if (!state.filteredQuestionIndices.includes(state.currentQuestionIndex)) {
+        state.currentQuestionIndex = state.filteredQuestionIndices[0] || 0;
+      }
+
+      document.getElementById('totalVisibleCount').innerText = state.filteredQuestionIndices.length;
+      renderQuestionGrid();
+      renderCurrentQuestion();
+      updateProgressBar();
+    }
+
+    // ================= RENDER BẢNG ĐIỀU HƯỚNG CÂU HỎI (QUESTION PALETTE) =================
+    function renderQuestionGrid() {
+      const grid = document.getElementById('questionGrid');
+      grid.innerHTML = '';
+
+      state.filteredQuestionIndices.forEach((qIdx, orderIndex) => {
+        const q = quizData[qIdx];
+        const btn = document.createElement('button');
+        const isCurrent = (qIdx === state.currentQuestionIndex);
+        const ans = state.userAnswers[q.id];
+        const isAnswered = ans !== undefined && ans !== null && ans !== '';
+
+        let statusClass = "bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700";
+
+        if (state.mode === 'study') {
+          if (isAnswered) {
+            const isCorrect = checkIsAnswerCorrect(q, ans);
+            if (isCorrect) {
+              statusClass = "bg-emerald-500 text-white border-emerald-600 shadow-xs";
+            } else {
+              statusClass = "bg-rose-500 text-white border-rose-600 shadow-xs";
+            }
+          }
+        } else {
+          // Exam Mode
+          if (state.examSubmitted) {
+            const isCorrect = checkIsAnswerCorrect(q, ans);
+            if (isCorrect) {
+              statusClass = "bg-emerald-500 text-white border-emerald-600";
+            } else if (isAnswered) {
+              statusClass = "bg-rose-500 text-white border-rose-600";
+            } else {
+              statusClass = "bg-slate-200 dark:bg-slate-700 text-slate-500";
+            }
+          } else {
+            if (isAnswered) {
+              statusClass = "bg-sky-500 text-white border-sky-600 shadow-xs";
+            }
+          }
+        }
+
+        const activeBorder = isCurrent ? "ring-2 ring-brand-500 ring-offset-2 dark:ring-offset-slate-900 font-bold" : "";
+        const isBookmarked = state.bookmarks.includes(q.id);
+
+        btn.className = `relative h-10 w-full rounded-xl text-xs font-semibold border flex items-center justify-center transition-all duration-150 active:scale-95 ${statusClass} ${activeBorder}`;
+        btn.innerHTML = `
+          <span>${orderIndex + 1}</span>
+          ${isBookmarked ? `<span class="absolute top-1 right-1 w-1.5 h-1.5 rounded-full bg-amber-400"></span>` : ''}
+        `;
+
+        btn.onclick = () => {
+          playBeep('click');
+          state.currentQuestionIndex = qIdx;
+          renderQuestionGrid();
+          renderCurrentQuestion();
+          // Đóng drawer trên mobile
+          document.getElementById('sidebarNav').classList.add('-translate-x-full');
+          document.getElementById('sidebarOverlay').classList.add('hidden');
+        };
+
+        grid.appendChild(btn);
+      });
+
+      updateAnsweredCounter();
+    }
+
+    // ================= KIỂM TRA ĐÁP ÁN ĐÚNG/SAI =================
+    function checkIsAnswerCorrect(question, userAnswer) {
+      if (userAnswer === undefined || userAnswer === null || userAnswer === '') return false;
+      if (question.type === 'mcq') {
+        return userAnswer === question.answer;
+      }
+      if (question.type === 'tf') {
+        // userAnswer dạng: { a: true, b: false, ... }
+        if (!userAnswer || typeof userAnswer !== 'object') return false;
+        let allMatched = true;
+        question.items.forEach(item => {
+          const key = item.text.charAt(0).toLowerCase();
+          if (userAnswer[key] !== item.ans) allMatched = false;
+        });
+        return allMatched;
+      }
+      if (question.type === 'short') {
+        const cleanUser = String(userAnswer).trim().toLowerCase();
+        const cleanTarget = String(question.answer).trim().toLowerCase();
+        return cleanUser === cleanTarget;
+      }
+      if (question.type === 'essay') {
+        return true; // Tự luận luôn tính là đã xem dàn ý
+      }
+      return false;
+    }
+
+    // ================= VẼ BIỂU ĐỒ VECTOR SVG CHO CÁC CÂU MINH HỌA TRỰC QUAN =================
+    function renderVisualDiagram(diagramType) {
+      const container = document.getElementById('visualDiagramContainer');
+      if (!diagramType) {
+        container.classList.add('hidden');
+        container.innerHTML = '';
+        return;
+      }
+
+      container.classList.remove('hidden');
+
+      if (diagramType === 'temperature_chart') {
+        // Đồ thị quang hợp theo nhiệt độ (Đề cương Câu 5)
+        container.innerHTML = `
+          <div class="w-full max-w-md">
+            <div class="text-center font-bold text-xs text-slate-700 dark:text-slate-300 mb-2">Đồ thị: Mối liên quan giữa Cường độ quang hợp và Nhiệt độ (°C)</div>
+            <svg viewBox="0 0 400 220" class="w-full h-auto text-slate-700 dark:text-slate-200">
+              <!-- Trục tọa độ -->
+              <line x1="50" y1="180" x2="380" y2="180" stroke="currentColor" stroke-width="2" marker-end="url(#arrow)"/>
+              <line x1="50" y1="180" x2="50" y2="20" stroke="currentColor" stroke-width="2"/>
+              <!-- Mũi tên trục -->
+              <defs>
+                <marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                  <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor"/>
+                </marker>
+              </defs>
+              <!-- Nhãn trục -->
+              <text x="310" y="205" font-size="11" fill="currentColor" font-weight="600">Nhiệt độ (°C)</text>
+              <text x="5" y="15" font-size="11" fill="currentColor" font-weight="600">Cường độ QH (mg CO2/dm².h)</text>
+              <!-- Các mốc trục hoành -->
+              <text x="45" y="195" font-size="10" fill="currentColor">-10</text>
+              <text x="90" y="195" font-size="10" fill="currentColor">0</text>
+              <text x="145" y="195" font-size="10" fill="currentColor">10</text>
+              <text x="200" y="195" font-size="10" fill="currentColor">20</text>
+              <text x="255" y="195" font-size="10" fill="currentColor">30</text>
+              <text x="305" y="195" font-size="10" fill="currentColor">40</text>
+              <text x="350" y="195" font-size="10" fill="currentColor">50</text>
+              <!-- Đường cong quang hợp -->
+              <path d="M 50 180 Q 120 160 170 125 T 270 50 Q 305 60 325 120 T 355 180" fill="none" stroke="#059669" stroke-width="3" stroke-linecap="round"/>
+              <!-- Vùng nhiệt độ 10 - 30 tăng dần -->
+              <line x1="145" y1="180" x2="145" y2="140" stroke="#94a3b8" stroke-dasharray="3,3"/>
+              <line x1="255" y1="180" x2="255" y2="55" stroke="#94a3b8" stroke-dasharray="3,3"/>
+              <rect x="145" y="130" width="110" height="48" fill="#10b981" fill-opacity="0.1" rx="4"/>
+              <text x="160" y="155" font-size="9" fill="#047857" font-weight="bold">Quang hợp tăng từ 10 - 30°C</text>
+            </svg>
+          </div>
+        `;
+      } else if (diagramType === 'compensation_chart') {
+        // Đồ thị điểm bù ánh sáng (Đề cương Câu 11)
+        container.innerHTML = `
+          <div class="w-full max-w-md">
+            <div class="text-center font-bold text-xs text-slate-700 dark:text-slate-300 mb-2">Đồ thị: Ảnh hưởng cường độ ánh sáng đến Quang hợp & Hô hấp</div>
+            <svg viewBox="0 0 380 220" class="w-full h-auto text-slate-700 dark:text-slate-200">
+              <!-- Trục tọa độ -->
+              <line x1="50" y1="180" x2="360" y2="180" stroke="currentColor" stroke-width="2"/>
+              <line x1="50" y1="180" x2="50" y2="20" stroke="currentColor" stroke-width="2"/>
+              <text x="250" y="205" font-size="11" fill="currentColor" font-weight="600">Cường độ ánh sáng</text>
+              <!-- Đường cường độ hô hấp (màu đỏ nằm ngang) -->
+              <line x1="50" y1="120" x2="340" y2="120" stroke="#e11d48" stroke-width="2.5"/>
+              <text x="230" y="112" font-size="11" fill="#e11d48" font-weight="bold">Cường độ hô hấp</text>
+              <!-- Đường cường độ quang hợp (màu xanh nét đứt rồi tăng bão hòa) -->
+              <path d="M 50 180 Q 90 140 120 120 T 230 45 L 340 45" fill="none" stroke="#0284c7" stroke-width="2.5" stroke-dasharray="5,3"/>
+              <text x="240" y="38" font-size="11" fill="#0284c7" font-weight="bold">Cường độ quang hợp</text>
+              <!-- Các mốc số 1, 2, 3, 4 -->
+              <circle cx="50" cy="120" r="3.5" fill="#e11d48"/>
+              <text x="32" y="124" font-size="12" font-weight="bold" fill="currentColor">1</text>
+              <circle cx="120" cy="120" r="4.5" fill="#0f172a" stroke="#fff" stroke-width="1.5"/>
+              <text x="115" y="108" font-size="13" font-weight="bold" fill="currentColor">2</text>
+              <circle cx="50" cy="180" r="3.5" fill="currentColor"/>
+              <text x="32" y="185" font-size="12" font-weight="bold" fill="currentColor">3</text>
+              <line x1="120" y1="120" x2="120" y2="180" stroke="#64748b" stroke-dasharray="3,3"/>
+              <circle cx="120" cy="180" r="3.5" fill="#0f172a"/>
+              <text x="116" y="200" font-size="13" font-weight="bold" fill="#059669">4</text>
+              <!-- Chú thích Điểm bù -->
+              <rect x="140" y="145" width="135" height="26" fill="#ecfdf5" stroke="#10b981" rx="6"/>
+              <text x="148" y="162" font-size="10" fill="#047857" font-weight="bold">Điểm bù ánh sáng: Điểm 4</text>
+            </svg>
+          </div>
+        `;
+      } else if (diagramType === 'photosynthesis_two_phase') {
+        // Sơ đồ 2 pha quang hợp (Đề cương Câu 13)
+        container.innerHTML = `
+          <div class="w-full max-w-lg">
+            <div class="text-center font-bold text-xs text-slate-700 dark:text-slate-300 mb-2">Sơ đồ: Mối quan hệ giữa 2 pha của quá trình Quang hợp</div>
+            <svg viewBox="0 0 520 200" class="w-full h-auto text-slate-800 dark:text-slate-100">
+              <!-- Pha 1 -->
+              <rect x="20" y="60" width="150" height="70" rx="8" fill="#a7f3d0" stroke="#059669" stroke-width="2"/>
+              <text x="65" y="102" font-size="15" font-weight="extrabold" fill="#065f46">PHA 1 (Sáng)</text>
+              <!-- Pha 2 -->
+              <rect x="350" y="60" width="150" height="70" rx="8" fill="#fef08a" stroke="#ca8a04" stroke-width="2"/>
+              <text x="400" y="102" font-size="15" font-weight="extrabold" fill="#854d0e">PHA 2 (Tối)</text>
+              <!-- Ánh sáng vào Pha 1 -->
+              <path d="M 40 15 L 60 50 M 60 15 L 80 50 M 80 15 L 100 50" stroke="#eab308" stroke-width="3" stroke-linecap="round"/>
+              <text x="40" y="12" font-size="11" font-weight="bold" fill="#ca8a04">Ánh sáng</text>
+              <!-- Chất A vào Pha 1 -->
+              <line x1="50" y1="165" x2="50" y2="135" stroke="#0284c7" stroke-width="2"/>
+              <text x="32" y="180" font-size="11" font-weight="bold" fill="#0284c7">Chất A (H2O)</text>
+              <!-- Chất B ra khỏi Pha 1 -->
+              <line x1="130" y1="135" x2="130" y2="165" stroke="#16a34a" stroke-width="2"/>
+              <text x="115" y="180" font-size="11" font-weight="bold" fill="#16a34a">Chất B (O2)</text>
+              <!-- Vòng chuyển ATP / NADPH từ Pha 1 -> Pha 2 -->
+              <path d="M 170 75 Q 260 40 350 75" fill="none" stroke="#059669" stroke-width="2"/>
+              <text x="215" y="55" font-size="10" font-weight="bold" fill="#059669">a, b: ATP & NADPH</text>
+              <!-- Vòng trả ADP / NADP+ từ Pha 2 -> Pha 1 -->
+              <path d="M 350 115 Q 260 150 170 115" fill="none" stroke="#64748b" stroke-width="2"/>
+              <text x="210" y="142" font-size="10" font-weight="bold" fill="#475569">c, d: ADP & NADP+</text>
+              <!-- Chất C vào Pha 2 -->
+              <line x1="380" y1="165" x2="380" y2="135" stroke="#9333ea" stroke-width="2"/>
+              <text x="360" y="180" font-size="11" font-weight="bold" fill="#9333ea">Chất C (CO2)</text>
+              <!-- Tạo carbohydrate -->
+              <line x1="460" y1="135" x2="460" y2="165" stroke="#d97706" stroke-width="2"/>
+              <text x="440" y="180" font-size="11" font-weight="bold" fill="#d97706">(CH2O)n</text>
+            </svg>
+          </div>
+        `;
+      }
+    }
+
+    // ================= RENDER NỘI DUNG CÂU HỎI TRUNG TÂM =================
+    function renderCurrentQuestion() {
+      const q = quizData[state.currentQuestionIndex];
+      if (!q) return;
+
+      // Cập nhật thẻ nhãn
+      const currentFilteredPos = state.filteredQuestionIndices.indexOf(state.currentQuestionIndex) + 1;
+      document.getElementById('badgeQuestionNumber').innerText = `Câu ${currentFilteredPos}/${state.filteredQuestionIndices.length}`;
+      document.getElementById('badgeTopic').innerText = q.topicName;
+      
+      const typeLabels = {
+        mcq: 'Trắc nghiệm 4 lựa chọn',
+        tf: 'Câu hỏi Đúng / Sai',
+        short: 'Trả lời số / ngắn',
+        essay: 'Tự luận trọng tâm'
+      };
+      document.getElementById('badgeType').innerText = typeLabels[q.type] || 'Ôn tập';
+
+      // Bookmark button
+      const isBookmarked = state.bookmarks.includes(q.id);
+      const bBtn = document.getElementById('bookmarkBtn');
+      bBtn.innerHTML = isBookmarked ? `<i data-lucide="bookmark-check" class="w-4 h-4 text-amber-500 fill-amber-500"></i>` : `<i data-lucide="bookmark" class="w-4 h-4"></i>`;
+
+      // Nội dung đề
+      document.getElementById('questionPrompt').innerText = q.prompt;
+
+      // Biểu đồ minh họa nếu có
+      renderVisualDiagram(q.diagramType);
+
+      // Render vùng tương tác đáp án
+      const area = document.getElementById('interactiveArea');
+      area.innerHTML = '';
+
+      const currentAnswer = state.userAnswers[q.id];
+      const isAnswered = currentAnswer !== undefined && currentAnswer !== null && currentAnswer !== '';
+
+      // DẠNG 1: TRẮC NGHIỆM 4 LỰA CHỌN (MCQ)
+      if (q.type === 'mcq') {
+        const letters = ['A', 'B', 'C', 'D'];
+        q.options.forEach((optText, optIdx) => {
+          const btn = document.createElement('button');
+          const isSelected = (currentAnswer === optIdx);
+
+          let btnColor = "bg-white dark:bg-slate-800/80 border-slate-200 dark:border-slate-700 hover:border-brand-500/60 dark:hover:border-brand-500/60";
+          let badgeColor = "bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200";
+
+          if (state.mode === 'study') {
+            if (isAnswered) {
+              if (optIdx === q.answer) {
+                // Đáp án đúng luôn tô xanh ngọc dịu
+                btnColor = "bg-emerald-50 dark:bg-emerald-950/40 border-emerald-500 text-emerald-900 dark:text-emerald-200 font-semibold";
+                badgeColor = "bg-emerald-500 text-white";
+              } else if (isSelected && optIdx !== q.answer) {
+                // Đáp án chọn sai tô đỏ san hô
+                btnColor = "bg-rose-50 dark:bg-rose-950/40 border-rose-500 text-rose-900 dark:text-rose-200";
+                badgeColor = "bg-rose-500 text-white";
+              }
+            }
+          } else {
+            // Exam mode
+            if (isSelected) {
+              btnColor = "bg-sky-50 dark:bg-sky-950/40 border-sky-500 text-sky-900 dark:text-sky-200 font-semibold";
+              badgeColor = "bg-sky-500 text-white";
+            }
+          }
+
+          btn.className = `w-full text-left p-3.5 sm:p-4 rounded-xl border flex items-center gap-3.5 transition-all duration-150 active:scale-[0.99] ${btnColor}`;
+          btn.innerHTML = `
+            <span class="w-8 h-8 rounded-lg flex items-center justify-center text-xs font-bold flex-shrink-0 transition-colors ${badgeColor}">
+              ${letters[optIdx]}
+            </span>
+            <span class="text-xs sm:text-sm leading-relaxed">${optText}</span>
+          `;
+
+          btn.onclick = () => {
+            if (state.mode === 'study' && isAnswered) return; // Study mode chọn xong thì cố định trừ khi bấm làm lại
+            state.userAnswers[q.id] = optIdx;
+            saveStateToStorage();
+            
+            if (state.mode === 'study') {
+              if (optIdx === q.answer) playBeep('correct');
+              else playBeep('wrong');
+            } else {
+              playBeep('click');
+            }
+
+            renderQuestionGrid();
+            renderCurrentQuestion();
+          };
+
+          area.appendChild(btn);
+        });
+      }
+
+      // DẠNG 2: CÂU HỎI ĐÚNG / SAI (TF)
+      else if (q.type === 'tf') {
+        const tfContainer = document.createElement('div');
+        tfContainer.className = "space-y-2.5";
+
+        const currentMap = currentAnswer || {};
+
+        q.items.forEach((item) => {
+          const key = item.text.charAt(0).toLowerCase();
+          const userVal = currentMap[key];
+
+          const row = document.createElement('div');
+          row.className = "p-3 sm:p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 flex flex-col sm:flex-row sm:items-center justify-between gap-3";
+
+          let feedbackBadge = "";
+          if (state.mode === 'study' && userVal !== undefined) {
+            const isMatch = (userVal === item.ans);
+            feedbackBadge = isMatch 
+              ? `<span class="text-[11px] font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1"><i data-lucide="check-circle" class="w-3.5 h-3.5"></i> Chính xác</span>`
+              : `<span class="text-[11px] font-bold text-rose-600 dark:text-rose-400 flex items-center gap-1"><i data-lucide="x-circle" class="w-3.5 h-3.5"></i> Sai (Đáp án: ${item.ans ? 'Đúng' : 'Sai'})</span>`;
+          }
+
+          row.innerHTML = `
+            <div class="text-xs sm:text-sm font-medium text-slate-800 dark:text-slate-200 leading-relaxed sm:max-w-md">
+              ${item.text}
+              ${feedbackBadge}
+            </div>
+            <div class="flex items-center gap-2 flex-shrink-0">
+              <button data-val="true" class="tf-btn px-4 py-1.5 rounded-lg text-xs font-bold border transition-all active:scale-95 ${userVal === true ? 'bg-emerald-600 text-white border-emerald-600 shadow-xs' : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 border-slate-300 dark:border-slate-600 hover:border-emerald-500'}">
+                Đúng
+              </button>
+              <button data-val="false" class="tf-btn px-4 py-1.5 rounded-lg text-xs font-bold border transition-all active:scale-95 ${userVal === false ? 'bg-rose-600 text-white border-rose-600 shadow-xs' : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 border-slate-300 dark:border-slate-600 hover:border-rose-500'}">
+                Sai
+              </button>
+            </div>
+          `;
+
+          // Gán sự kiện
+          row.querySelectorAll('.tf-btn').forEach(btn => {
+            btn.onclick = () => {
+              playBeep('click');
+              const val = btn.getAttribute('data-val') === 'true';
+              if (!state.userAnswers[q.id]) state.userAnswers[q.id] = {};
+              state.userAnswers[q.id][key] = val;
+              saveStateToStorage();
+              renderQuestionGrid();
+              renderCurrentQuestion();
+            };
+          });
+
+          tfContainer.appendChild(row);
+        });
+
+        area.appendChild(tfContainer);
+      }
+
+      // DẠNG 3: TRẢ LỜI NGẮN / ĐIỀN SỐ (SHORT ANSWER)
+      else if (q.type === 'short') {
+        const shortBox = document.createElement('div');
+        shortBox.className = "p-5 rounded-2xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200 dark:border-slate-700 text-center space-y-4 max-w-md mx-auto";
+
+        const val = currentAnswer !== undefined ? currentAnswer : '';
+        const isCorrect = isAnswered ? checkIsAnswerCorrect(q, currentAnswer) : false;
+
+        let statusHint = "";
+        if (state.mode === 'study' && isAnswered) {
+          statusHint = isCorrect
+            ? `<div class="text-xs font-bold text-emerald-600 dark:text-emerald-400 flex items-center justify-center gap-1"><i data-lucide="check" class="w-4 h-4"></i> Rất chính xác! Đáp án là: ${q.answer}</div>`
+            : `<div class="text-xs font-bold text-rose-600 dark:text-rose-400 flex items-center justify-center gap-1"><i data-lucide="alert-circle" class="w-4 h-4"></i> Chưa chính xác. Đáp án đúng là: ${q.answer}</div>`;
+        }
+
+        shortBox.innerHTML = `
+          <div class="text-xs font-semibold text-slate-500 dark:text-slate-400">Nhập đáp án (chữ số hoặc từ khóa ngắn gọn):</div>
+          <div class="flex items-center justify-center gap-2">
+            <input type="text" id="shortInput" value="${val}" placeholder="VD: 3" class="w-36 text-center text-lg font-bold px-3 py-2 rounded-xl bg-white dark:bg-slate-800 border-2 border-slate-300 dark:border-slate-600 focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/20 text-slate-900 dark:text-white">
+            <button id="shortConfirmBtn" class="px-4 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-700 text-white text-xs font-bold transition-all shadow-xs active:scale-95">
+              Xác Nhận
+            </button>
+          </div>
+          ${statusHint}
+        `;
+
+        area.appendChild(shortBox);
+
+        setTimeout(() => {
+          const btn = document.getElementById('shortConfirmBtn');
+          const inp = document.getElementById('shortInput');
+          if (btn && inp) {
+            btn.onclick = () => {
+              const textVal = inp.value.trim();
+              if (!textVal) return;
+              state.userAnswers[q.id] = textVal;
+              saveStateToStorage();
+              if (state.mode === 'study') {
+                if (checkIsAnswerCorrect(q, textVal)) playBeep('correct');
+                else playBeep('wrong');
+              } else {
+                playBeep('click');
+              }
+              renderQuestionGrid();
+              renderCurrentQuestion();
+            };
+            inp.onkeydown = (e) => {
+              if (e.key === 'Enter') btn.click();
+            };
+          }
+        }, 50);
+      }
+
+      // DẠNG 4: TỰ LUẬN CÓ DÀN Ý (ESSAY)
+      else if (q.type === 'essay') {
+        const essayBox = document.createElement('div');
+        essayBox.className = "space-y-4";
+
+        let outlineHtml = "";
+        q.outline.forEach(section => {
+          outlineHtml += `
+            <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 space-y-2">
+              <h4 class="font-bold text-xs sm:text-sm text-brand-700 dark:text-brand-300 uppercase tracking-wide">${section.title}</h4>
+              <ul class="list-disc list-inside space-y-1.5 text-xs sm:text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
+                ${section.points.map(pt => `<li>${pt}</li>`).join('')}
+              </ul>
+            </div>
+          `;
+        });
+
+        essayBox.innerHTML = `
+          <div class="p-3.5 rounded-xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900/60 text-xs text-amber-800 dark:text-amber-300 flex items-center justify-between">
+            <span class="flex items-center gap-1.5 font-medium"><i data-lucide="info" class="w-4 h-4"></i> Dạng tự luận có dàn ý hướng dẫn làm bài thi chi tiết</span>
+            <button id="markEssayReadBtn" class="px-3 py-1 bg-amber-600 hover:bg-amber-700 text-white rounded-lg font-bold text-xs transition-all">
+              ${isAnswered ? '✓ Đã nắm vững' : 'Đánh dấu đã ôn'}
+            </button>
+          </div>
+          <div class="space-y-3">
+            ${outlineHtml}
+          </div>
+        `;
+
+        area.appendChild(essayBox);
+
+        setTimeout(() => {
+          const mBtn = document.getElementById('markEssayReadBtn');
+          if (mBtn) {
+            mBtn.onclick = () => {
+              playBeep('correct');
+              state.userAnswers[q.id] = true;
+              saveStateToStorage();
+              renderQuestionGrid();
+              renderCurrentQuestion();
+            };
+          }
+        }, 50);
+      }
+
+      // KHUNG GIẢI THÍCH (ACCORDION - STUDY MODE)
+      const expContainer = document.getElementById('explanationContainer');
+      const retryBtn = document.getElementById('retryQuestionBtn');
+
+      if (state.mode === 'study' && isAnswered && q.type !== 'essay') {
+        expContainer.classList.remove('hidden');
+        document.getElementById('explanationContent').innerText = q.explanation || "Chưa có lời giải chi tiết.";
+        retryBtn.classList.remove('hidden');
+        retryBtn.classList.add('inline-flex');
+        retryBtn.onclick = () => {
+          playBeep('click');
+          delete state.userAnswers[q.id];
+          saveStateToStorage();
+          renderQuestionGrid();
+          renderCurrentQuestion();
+        };
+      } else {
+        expContainer.classList.add('hidden');
+        retryBtn.classList.add('hidden');
+        retryBtn.classList.remove('inline-flex');
+      }
+
+      // Cập nhật trạng thái nút Trước / Sau
+      const currentPos = state.filteredQuestionIndices.indexOf(state.currentQuestionIndex);
+      document.getElementById('prevQuestionBtn').disabled = (currentPos <= 0);
+      document.getElementById('nextQuestionBtn').disabled = (currentPos >= state.filteredQuestionIndices.length - 1);
+
+      // Render lại Lucide icons
+      lucide.createIcons();
+    }
+
+    // ================= TIẾN TRÌNH & BỘ ĐẾM SỐ CÂU ĐÃ LÀM =================
+    function updateAnsweredCounter() {
+      let count = 0;
+      state.filteredQuestionIndices.forEach(idx => {
+        const q = quizData[idx];
+        const a = state.userAnswers[q.id];
+        if (a !== undefined && a !== null && a !== '') count++;
+      });
+      document.getElementById('answeredCount').innerText = count;
+    }
+
+    function updateProgressBar() {
+      const total = state.filteredQuestionIndices.length;
+      if (total === 0) return;
+      let answered = 0;
+      state.filteredQuestionIndices.forEach(idx => {
+        const q = quizData[idx];
+        const a = state.userAnswers[q.id];
+        if (a !== undefined && a !== null && a !== '') answered++;
+      });
+      const pct = Math.round((answered / total) * 100);
+      document.getElementById('progressBar').style.width = `${pct}%`;
+    }
+
+    // ================= ĐỒNG HỒ ĐẾM NGƯỢC (EXAM MODE) =================
+    function startExamTimer() {
+      stopExamTimer();
+      state.examTimerSeconds = 45 * 60;
+      updateTimerDisplay();
+      state.timerInterval = setInterval(() => {
+        if (state.examTimerSeconds > 0) {
+          state.examTimerSeconds--;
+          updateTimerDisplay();
+        } else {
+          stopExamTimer();
+          alert('Đã hết thời gian làm bài thi thử! Hệ thống sẽ tự động tổng kết kết quả.');
+          submitExam();
+        }
+      }, 1000);
+    }
+
+    function stopExamTimer() {
+      if (state.timerInterval) {
+        clearInterval(state.timerInterval);
+        state.timerInterval = null;
+      }
+    }
+
+    function updateTimerDisplay() {
+      const m = Math.floor(state.examTimerSeconds / 60);
+      const s = state.examTimerSeconds % 60;
+      const fmt = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+      document.getElementById('timerDisplay').innerText = fmt;
+    }
+
+    // ================= XỬ LÝ CHUYỂN CHẾ ĐỘ (STUDY VS EXAM) =================
+    function switchMode(newMode) {
+      playBeep('click');
+      state.mode = newMode;
+      const studyBtn = document.getElementById('modeStudyBtn');
+      const examBtn = document.getElementById('modeExamBtn');
+      const timerBox = document.getElementById('timerContainer');
+      const submitBtn = document.getElementById('submitExamBtn');
+
+      if (newMode === 'study') {
+        studyBtn.className = "px-2.5 sm:px-3 py-1.5 rounded-lg bg-white dark:bg-slate-700 text-brand-600 dark:text-brand-400 shadow-xs transition-all flex items-center gap-1.5";
+        examBtn.className = "px-2.5 sm:px-3 py-1.5 rounded-lg text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all flex items-center gap-1.5";
+        timerBox.classList.add('hidden');
+        timerBox.classList.remove('flex');
+        submitBtn.classList.add('hidden');
+        submitBtn.classList.remove('flex');
+        stopExamTimer();
+        state.examSubmitted = false;
+      } else {
+        examBtn.className = "px-2.5 sm:px-3 py-1.5 rounded-lg bg-white dark:bg-slate-700 text-brand-600 dark:text-brand-400 shadow-xs transition-all flex items-center gap-1.5";
+        studyBtn.className = "px-2.5 sm:px-3 py-1.5 rounded-lg text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all flex items-center gap-1.5";
+        timerBox.classList.remove('hidden');
+        timerBox.classList.add('flex');
+        submitBtn.classList.remove('hidden');
+        submitBtn.classList.add('flex');
+        startExamTimer();
+      }
+
+      saveStateToStorage();
+      renderQuestionGrid();
+      renderCurrentQuestion();
+    }
+
+    // ================= TỔNG KẾT VÀ CHẤM ĐIỂM THI THỬ =================
+    function submitExam() {
+      stopExamTimer();
+      state.examSubmitted = true;
+      playBeep('correct');
+
+      let totalQuestions = 0;
+      let correctCount = 0;
+      let wrongCount = 0;
+      let unAnsweredCount = 0;
+
+      let topicStats = {
+        topic1: { total: 0, correct: 0 },
+        topic2: { total: 0, correct: 0 },
+        topic3: { total: 0, correct: 0 }
+      };
+
+      quizData.forEach(q => {
+        if (q.type === 'essay') return; // Không tính điểm trắc nghiệm vào câu tự luận
+        totalQuestions++;
+        const ans = state.userAnswers[q.id];
+        const isAns = (ans !== undefined && ans !== null && ans !== '');
+        const isCorr = checkIsAnswerCorrect(q, ans);
+
+        if (!isAns) unAnsweredCount++;
+        else if (isCorr) correctCount++;
+        else wrongCount++;
+
+        if (topicStats[q.topic]) {
+          topicStats[q.topic].total++;
+          if (isCorr) topicStats[q.topic].correct++;
+        }
+      });
+
+      // Điểm số thang điểm 10
+      const score = Math.round((correctCount / totalQuestions) * 100) / 10;
+      document.getElementById('scoreDisplay').innerHTML = `${score.toFixed(1)} <span class="text-xl text-slate-400 font-normal">/ 10</span>`;
+      document.getElementById('scoreDetailStats').innerText = `Đúng: ${correctCount} | Sai: ${wrongCount} | Chưa làm: ${unAnsweredCount}`;
+
+      document.getElementById('scoreTopic1').innerText = `${topicStats.topic1.correct}/${topicStats.topic1.total} câu`;
+      document.getElementById('scoreTopic2').innerText = `${topicStats.topic2.correct}/${topicStats.topic2.total} câu`;
+      document.getElementById('scoreTopic3').innerText = `${topicStats.topic3.correct}/${topicStats.topic3.total} câu`;
+
+      // Xếp loại danh hiệu
+      const title = document.getElementById('resultModalTitle');
+      const sub = document.getElementById('resultModalSubtitle');
+      if (score >= 9.0) {
+        title.innerText = "Xuất Sắc! Điểm Tuyệt Đối";
+        sub.innerText = "Kiến thức Sinh học 11 vững vàng, sẵn sàng đạt điểm 10 Giữa Kì!";
+      } else if (score >= 7.5) {
+        title.innerText = "Rất Tốt! Đạt Chuẩn Giỏi";
+        sub.innerText = "Chỉ cần rà soát lại một vài câu bẫy nhỏ là bạn sẽ hoàn hảo!";
+      } else if (score >= 5.0) {
+        title.innerText = "Đạt Yêu Cầu - Mức Khá";
+        sub.innerText = "Hãy xem lại các câu làm sai và ôn lại sơ đồ quang hợp!";
+      } else {
+        title.innerText = "Cần Tăng Cường Ôn Luyện";
+        sub.innerText = "Chuyển sang Chế độ Luyện tập để xem hướng dẫn giải chi tiết nhé!";
+      }
+
+      document.getElementById('resultModal').classList.remove('hidden');
+      document.getElementById('resultModal').classList.add('flex');
+
+      renderQuestionGrid();
+      renderCurrentQuestion();
+    }
+
+    // ================= DARK MODE & THEME CONTROLS =================
+    function applyTheme() {
+      const html = document.documentElement;
+      const themeIcon = document.getElementById('themeIcon');
+      if (state.darkMode) {
+        html.classList.add('dark');
+        themeIcon.setAttribute('data-lucide', 'sun');
+      } else {
+        html.classList.remove('dark');
+        themeIcon.setAttribute('data-lucide', 'moon');
+      }
+      lucide.createIcons();
+    }
+
+    // ================= GÁN SỰ KIỆN GIAO DIỆN (EVENT LISTENERS) =================
+    document.addEventListener('DOMContentLoaded', () => {
+      loadStateFromStorage();
+      applyTheme();
+
+      // Nút lọc
+      document.getElementById('topicFilter').addEventListener('change', applyFilters);
+      document.getElementById('typeFilter').addEventListener('change', applyFilters);
+
+      // Chuyển câu trước / sau
+      document.getElementById('prevQuestionBtn').onclick = () => {
+        playBeep('click');
+        const pos = state.filteredQuestionIndices.indexOf(state.currentQuestionIndex);
+        if (pos > 0) {
+          state.currentQuestionIndex = state.filteredQuestionIndices[pos - 1];
+          renderQuestionGrid();
+          renderCurrentQuestion();
+        }
+      };
+
+      document.getElementById('nextQuestionBtn').onclick = () => {
+        playBeep('click');
+        const pos = state.filteredQuestionIndices.indexOf(state.currentQuestionIndex);
+        if (pos < state.filteredQuestionIndices.length - 1) {
+          state.currentQuestionIndex = state.filteredQuestionIndices[pos + 1];
+          renderQuestionGrid();
+          renderCurrentQuestion();
+        }
+      };
+
+      // Đánh dấu bookmark
+      document.getElementById('bookmarkBtn').onclick = () => {
+        const q = quizData[state.currentQuestionIndex];
+        const bIdx = state.bookmarks.indexOf(q.id);
+        if (bIdx > -1) {
+          state.bookmarks.splice(bIdx, 1);
+        } else {
+          state.bookmarks.push(q.id);
+          playBeep('click');
+        }
+        saveStateToStorage();
+        renderQuestionGrid();
+        renderCurrentQuestion();
+      };
+
+      // Chuyển đổi Dark/Light mode
+      document.getElementById('themeToggleBtn').onclick = () => {
+        state.darkMode = !state.darkMode;
+        saveStateToStorage();
+        applyTheme();
+      };
+
+      // Bật/Tắt âm thanh
+      document.getElementById('soundToggleBtn').onclick = () => {
+        state.soundEnabled = !state.soundEnabled;
+        const soundIcon = document.getElementById('soundIcon');
+        soundIcon.setAttribute('data-lucide', state.soundEnabled ? 'volume-2' : 'volume-x');
+        lucide.createIcons();
+        saveStateToStorage();
+      };
+
+      // Chuyển đổi chế độ Study / Exam
+      document.getElementById('modeStudyBtn').onclick = () => switchMode('study');
+      document.getElementById('modeExamBtn').onclick = () => switchMode('exam');
+
+      // Nộp bài thi thử
+      document.getElementById('submitExamBtn').onclick = () => {
+        if (confirm('Bạn có chắc chắn muốn nộp bài thi thử để xem điểm số và phân tích chi tiết?')) {
+          submitExam();
+        }
+      };
+
+      // Nút đóng Modal kết quả
+      document.getElementById('closeModalBtn').onclick = () => {
+        document.getElementById('resultModal').classList.add('hidden');
+        document.getElementById('resultModal').classList.remove('flex');
+      };
+
+      // Nút lọc xem các câu làm sai sau khi thi
+      document.getElementById('reviewWrongBtn').onclick = () => {
+        document.getElementById('resultModal').classList.add('hidden');
+        document.getElementById('resultModal').classList.remove('flex');
+        
+        // Tìm câu làm sai đầu tiên
+        for (let idx of state.filteredQuestionIndices) {
+          const q = quizData[idx];
+          const ans = state.userAnswers[q.id];
+          if (!checkIsAnswerCorrect(q, ans)) {
+            state.currentQuestionIndex = idx;
+            break;
+          }
+        }
+        renderQuestionGrid();
+        renderCurrentQuestion();
+      };
+
+      // Nút Đặt lại tiến độ (Reset)
+      document.getElementById('resetProgressBtn').onclick = () => {
+        if (confirm('Bạn có chắc chắn muốn xóa toàn bộ câu trả lời để ôn tập lại từ đầu?')) {
+          state.userAnswers = {};
+          saveStateToStorage();
+          renderQuestionGrid();
+          renderCurrentQuestion();
+          updateProgressBar();
+        }
+      };
+
+      // Sidebar mobile drawer
+      const sidebarNav = document.getElementById('sidebarNav');
+      const sidebarOverlay = document.getElementById('sidebarOverlay');
+      document.getElementById('mobileMenuBtn').onclick = () => {
+        sidebarNav.classList.remove('-translate-x-full');
+        sidebarOverlay.classList.remove('hidden');
+      };
+      document.getElementById('closeSidebarBtn').onclick = () => {
+        sidebarNav.classList.add('-translate-x-full');
+        sidebarOverlay.classList.add('hidden');
+      };
+      sidebarOverlay.onclick = () => {
+        sidebarNav.classList.add('-translate-x-full');
+        sidebarOverlay.classList.add('hidden');
+      };
+
+      // Phím tắt điều hướng nhanh (Mũi tên trái/phải)
+      window.addEventListener('keydown', (e) => {
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
+        if (e.key === 'ArrowLeft') document.getElementById('prevQuestionBtn').click();
+        if (e.key === 'ArrowRight') document.getElementById('nextQuestionBtn').click();
+      });
+
+      // Áp dụng bộ lọc ban đầu và khởi chạy
+      applyFilters();
+      lucide.createIcons();
+    });
+  </script>
+</body>
+</html>
